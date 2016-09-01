@@ -1,0 +1,24 @@
+<?php
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	setcookie ("code", "", time() - 3600);
+	$infotext = urlencode("Logout erfolgreich!");
+	header("Location: /login.php?infotext=" . $infotext);
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Logout</title>
+		<meta http-equiv="content-type" content="text/html" charset="utf-8">
+		<meta name="robots" content="noindex,nofollow">
+		<link rel="stylesheet" href="/css/style.css" type="text/css" />
+		<link rel="SHORTCUT ICON" href="/img/icon.png">
+	</head>
+	<body>
+		<h1 style="text-align: center;">Logout erfolgreich</h1>
+		<p style="text-align: center;">
+			<a href="index.php">weiter</a>
+		</p>
+		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+	</body>
+</html>
