@@ -16,14 +16,20 @@ function rand_string($lng)
 
 if(isset($_POST['useremail']) && isset($_POST['userpassword']))
 {
-	$user = mysql_fetch_array(mysql_query("SELECT COUNT(*), id FROM user WHERE mail = '" . $_POST['useremail'] . "' AND password = '" . md5($_POST['userpassword']) . "' "));
+	$user = mysql_fetch_array(mysql_query("SELECT COUNT(*), id, verified FROM user WHERE mail = '" . $_POST['useremail'] . "' AND password = '" . md5($_POST['userpassword']) . "' "));
 	if($user[0] > 0)
 	{
-		$code = rand_string(64);
-		setcookie("code", $code, time()+(60 * 60 * 24 * 365));
-		mysql_query("INSERT INTO sessions (user_id, session_code) VALUES (" . $user[1] . ", '" . $code . "')");
-		header("Location: /index.php");
-	}	
+		if($user[2] == '1'){
+			$code = rand_string(64);
+			setcookie("code", $code, time()+(60 * 60 * 24 * 365));
+			mysql_query("INSERT INTO sessions (user_id, session_code) VALUES (" . $user[1] . ", '" . $code . "')");
+			header("Location: /index.php");
+		} else {
+			echo "Dein Account ist nicht verifiziert. Bitte bestätige den Link in der bestätigungs-Email!";
+		}
+	} else {
+		echo "Falsche Email-Adresse oder falches Passwort!";
+	}
 }
 ?>
 <!DOCTYPE html>
