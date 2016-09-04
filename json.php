@@ -30,25 +30,5 @@
 			array_push($json_response,$row_array);
 		}
 		echo json_encode($json_response); 
-	} else if($_GET['json'] == "userdaten"){		 
-		$result = mysql_query("
-			SELECT * 
-			FROM user, sessions
-			WHERE sessions.user_id = user.id
-			AND sessions.session_code = '" . $_COOKIE['code'] . "' 
-		");
-
-		$json_response = array();
-
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			$row_array['boxsize'] = $row['boxsize'];
-			$row_array['zeilen'] = $row['zeilen'];
-			$row_array['spalten'] = $row['spalten'];
-			$row_array['m_boxsize'] = $row['m_boxsize'];
-			$row_array['m_zeilen'] = $row['m_zeilen'];
-			$row_array['m_spalten'] = $row['m_spalten'];
-			array_push($json_response,$row_array);
-		}
-		echo json_encode($json_response); 	
 	}
 ?>
