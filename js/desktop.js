@@ -28,6 +28,24 @@ $( document ).ready(function() {
 			
 			$(this).css("z-index", "2");
 			$("#main").css("height", $("#main").height() + $( "#delete_area" ).height());
+		},
+		stop: function( event, ui ) {
+			$dragged_element.css("z-index", "auto");
+			$("#main").css("height", $("#main").height() - $( "#delete_area" ).height());
+			
+			$("#edit_area").animate({
+				opacity: 0,
+				width: "0%",
+			}, 800, function() {
+				// Animation complete.
+			});
+
+			$("#delete_area").animate({
+				opacity: 0,
+				width: "0%",
+			}, 800, function() {
+				$( "#edit_area" ).css("display", "hide");
+			});
 		}
 	});
 	
@@ -55,23 +73,6 @@ $( document ).ready(function() {
 				lnk.add_Value("userboxid2", urlencode(drop_box_id));
 				lnk.open_in_Background(false);
 			}
-			
-			$(this).css("z-index", "auto");
-			$("#main").css("height", $("#main").height() - $( "#delete_area" ).height());
-			
-			$("#edit_area").animate({
-				opacity: 0,
-				width: "0%",
-			}, 800, function() {
-				// Animation complete.
-			});
-
-			$("#delete_area").animate({
-				opacity: 0,
-				width: "0%",
-			}, 800, function() {
-				// Animation complete.
-			});
 		}
 	});
 	
@@ -126,9 +127,6 @@ $( document ).ready(function() {
 					}
 				});
 			}
-			
-			$(this).css("z-index", "auto");
-			$("#main").css("height", $("#main").height() - $( "#delete_area" ).height());
 		}
 	});
 	
