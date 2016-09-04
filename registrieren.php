@@ -30,7 +30,7 @@
 				"));
 				for($i=1;$i<=5;$i++){
 					mysql_query("
-						INSERT INTO desktop_user_suchen (
+						INSERT INTO startpage_user_suchen (
 							user_id, 
 							such_id
 						) 

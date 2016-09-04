@@ -15,10 +15,10 @@ $user = mysql_fetch_array(mysql_query("
 <h2>Verwendete Suchen</h2>
 <?php
 $suchen = mysql_query("
-	SELECT desktop_suchen.inputtext
-	FROM desktop_suchen, desktop_user_suchen
-	WHERE desktop_suchen.id = desktop_user_suchen.such_id
-	AND desktop_user_suchen.user_id = '" . $user["id"] . "' 
+	SELECT startpage_suchen.inputtext
+	FROM startpage_suchen, startpage_user_suchen
+	WHERE startpage_suchen.id = startpage_user_suchen.such_id
+	AND startpage_user_suchen.user_id = '" . $user["id"] . "' 
 ");
 while($row = mysql_fetch_array($suchen))
 {

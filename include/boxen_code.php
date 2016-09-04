@@ -10,7 +10,7 @@
 		AND sessions.session_code = '" . $_COOKIE['code'] . "' 
 	"));
 	$ergebnis = mysql_query("
-		SELECT * FROM desktop_boxen 
+		SELECT * FROM startpage_boxen 
 		WHERE user = '" . $user["id"] . "'
 		AND text LIKE '%" . $_GET['search'] . "%'
 		ORDER BY userboxid

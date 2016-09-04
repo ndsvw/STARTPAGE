@@ -13,10 +13,10 @@
 
 	if($_GET['json'] == "usersuchen"){
 		$result = mysql_query("
-			SELECT desktop_user_suchen.id, desktop_suchen.inputtext, desktop_suchen.submittext, desktop_suchen.method, desktop_suchen.link, desktop_suchen.name 
-			FROM desktop_suchen, desktop_user_suchen
-			WHERE desktop_suchen.id = desktop_user_suchen.such_id
-			AND desktop_user_suchen.user_id = '" . $user['id'] . "'
+			SELECT startpage_user_suchen.id, startpage_suchen.inputtext, startpage_suchen.submittext, startpage_suchen.method, startpage_suchen.link, startpage_suchen.name 
+			FROM startpage_suchen, startpage_user_suchen
+			WHERE startpage_suchen.id = startpage_user_suchen.such_id
+			AND startpage_user_suchen.user_id = '" . $user['id'] . "'
 		");
 
 		$json_response = array();

@@ -12,9 +12,9 @@
 
 	$anzahl_suchboxen = mysql_fetch_array(mysql_query("
 		SELECT COUNT(*)
-		FROM user, desktop_user_suchen
-		WHERE user.id = desktop_user_suchen.user_id
-		AND desktop_user_suchen.user_id = '" . $user["id"] . "'
+		FROM user, startpage_user_suchen
+		WHERE user.id = startpage_user_suchen.user_id
+		AND startpage_user_suchen.user_id = '" . $user["id"] . "'
 	"))[0];
 ?>
 <!DOCTYPE html>
@@ -44,10 +44,10 @@
 			<div id="searchbox" style="width: <?php echo (46 + 1 + 1 + 3) * $anzahl_suchboxen + 40 * 2; ?>px;">
 				<?php
 					$suchen = mysql_query("
-						SELECT desktop_suchen.clicklink, desktop_user_suchen.id, desktop_suchen.shortcut
-						FROM desktop_suchen, desktop_user_suchen
-						WHERE desktop_suchen.id = desktop_user_suchen.such_id
-						AND desktop_user_suchen.user_id = '" . $user['id'] . "'
+						SELECT startpage_suchen.clicklink, startpage_user_suchen.id, startpage_suchen.shortcut
+						FROM startpage_suchen, startpage_user_suchen
+						WHERE startpage_suchen.id = startpage_user_suchen.such_id
+						AND startpage_user_suchen.user_id = '" . $user['id'] . "'
 					");
 					while($row = mysql_fetch_array($suchen))
 					{
@@ -68,7 +68,7 @@
 			Center_Parent("#main", <?php echo $user["boxsize"]; ?>);
 			<?php
 			$ergebnis = mysql_query("
-				SELECT * FROM desktop_boxen 
+				SELECT * FROM startpage_boxen 
 				WHERE user = '" . $user["id"] . "'
 				ORDER BY userboxid
 			 ");

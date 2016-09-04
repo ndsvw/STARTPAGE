@@ -18,7 +18,7 @@
 			forecolor,
 			backcolor
 		FROM 
-			desktop_boxen 
+			startpage_boxen 
 		WHERE 
 			user = '" . $user["id"] . "' 
 		AND
