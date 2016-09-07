@@ -5,12 +5,17 @@ include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php");
 
 if(isset($_COOKIE['code']) && isset($_GET['action']))
 {
-	$user = mysql_fetch_array(mysql_query("
-		SELECT * 
-		FROM user, sessions
-		WHERE sessions.user_id = user.id
-		AND sessions.session_code = '" . $_COOKIE['code'] . "' 
-	"));
+	$userId = mysql_fetch_array(mysql_query("
+		SELECT 
+			id
+		FROM 
+			user, 
+			sessions
+		WHERE 
+			sessions.user_id = user.id
+		AND 
+			sessions.session_code = '" . mysql_real_escape_string($_COOKIE['code']) . "' 
+	"))[0];
 	
 	
 	// -- -------------- -- //
@@ -20,14 +25,21 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 	if(isset($_GET['boxtext']) && isset($_GET['boxlink']) && isset($_GET['boxforecolor']) && isset($_GET['boxbackcolor']) && $_GET['action'] == "box_hinzufuegen")
 	{
 		$query = "		
-			SELECT (userboxid + 1)
-			FROM startpage_boxen
-			WHERE user = '" . $user["id"] . "'
-			AND userboxid = (
-				SELECT MAX(userboxid)
-				FROM startpage_boxen
-				WHERE user = '" . $user["id"] . "'
-			)";
+			SELECT 
+				(userboxid + 1)
+			FROM 
+				startpage_boxen
+			WHERE 
+				user = '" . $userId . "'
+			AND 
+				userboxid = (
+					SELECT 
+						MAX(userboxid)
+					FROM 
+						startpage_boxen
+					WHERE 
+						user = '" . $userId . "'
+				)";
 		$neue_userboxid = mysql_fetch_array(mysql_query($query))[0];
 		mysql_query("
 			INSERT INTO startpage_boxen (
@@ -38,11 +50,11 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 				user, 
 				userboxid
 			)VALUES(
-				'" . urlencode($_GET['boxtext']) . "', 
-				'" . urlencode($_GET['boxlink']) . "', 
-				'" . urlencode($_GET['boxforecolor']) . "', 
-				'" . urlencode($_GET['boxbackcolor']) . "',
-				'" . $user["id"] . "',
+				'" . mysql_real_escape_string(urlencode($_GET['boxtext'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['boxlink'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['boxforecolor'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['boxbackcolor'])) . "',
+				'" . $userId . "',
 				'" . $neue_userboxid . "'
 			)
 		");
@@ -60,14 +72,14 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 			UPDATE 
 				startpage_boxen 
 			SET 
-				text = '" . urlencode($_GET['boxtext']) . "', 
-				link = '" . urlencode($_GET['boxlink']) . "', 
-				forecolor = '" . urlencode($_GET['boxforecolor']) . "', 
-				backcolor = '" . urlencode($_GET['boxbackcolor']) . "' 
+				text = '" . mysql_real_escape_string(urlencode($_GET['boxtext'])) . "', 
+				link = '" . mysql_real_escape_string(urlencode($_GET['boxlink'])) . "', 
+				forecolor = '" . mysql_real_escape_string(urlencode($_GET['boxforecolor'])) . "', 
+				backcolor = '" . mysql_real_escape_string(urlencode($_GET['boxbackcolor'])) . "' 
 			WHERE 
-				user = '" . $user["id"] . "' 
+				user = '" . $userId . "' 
 			AND 
-				userboxid = '" . $_GET['userboxid'] . "' 
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid']) . "' 
 		");
 	}
 	
@@ -83,9 +95,9 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 			DELETE FROM 
 				startpage_boxen 
 			WHERE 
-				user = '" . $user["id"] . "' 
+				user = '" . $userId . "' 
 			AND 
-				userboxid = '" . $_GET['userboxid'] . "' 
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid']) . "' 
 		");
 		
 		mysql_query("
@@ -94,9 +106,9 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 			SET
 				userboxid = (userboxid - 1)
 			WHERE
-				user = '" . $user["id"] . "' 
+				user = '" . $userId . "' 
 			AND
-				userboxid > '" . $_GET['userboxid'] . "' 
+				userboxid > '" . mysql_real_escape_string($_GET['userboxid']) . "' 
 		");
 	}
 	
@@ -114,23 +126,23 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 			SET
 				userboxid = '-1'
 			WHERE
-				userboxid = '" . $_GET['userboxid1'] . "' 
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid1']) . "' 
 		");
 			
 		mysql_query("
 			UPDATE
 				startpage_boxen
 			SET
-				userboxid = '" . $_GET['userboxid1'] .  "'
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid1']) .  "'
 			WHERE
-				userboxid = '" . $_GET['userboxid2'] . "' 
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid2']) . "' 
 		");
 			
 		mysql_query("
 			UPDATE
 				startpage_boxen
 			SET
-				userboxid = '" . $_GET['userboxid2'] .  "'
+				userboxid = '" . mysql_real_escape_string($_GET['userboxid2']) .  "'
 			WHERE
 				userboxid = '-1' 
 		");
@@ -148,11 +160,11 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 			UPDATE 
 				user 
 			SET 
-				boxsize = '" . $_GET['boxsize'] . "', 
-				backcolor = '" . urlencode($_GET['bodybackcolor']) . "', 
-				style = '" . $_GET['boxstyle'] . "' 
+				boxsize = '" . mysql_real_escape_string($_GET['boxsize']) . "', 
+				backcolor = '" . mysql_real_escape_string(urlencode($_GET['bodybackcolor'])) . "', 
+				style = '" . mysql_real_escape_string($_GET['boxstyle']) . "' 
 			WHERE 
-				id = '" . $user["id"] . "'
+				id = '" . $userId . "'
 		");
 	}
 	
@@ -174,13 +186,13 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 				name, 
 				clicklink
 			) VALUES (
-				'" . urlencode($_GET['shortcut']) . "', 
-				'" . urlencode($_GET['placeholder']) . "', 
-				'" . urlencode($_GET['buttontext']) . "', 
-				'" . urlencode($_GET['link']) . "', 
-				'" . urlencode($_GET['method']) . "', 
-				'" . urlencode($_GET['name']) . "', 
-				'" . urlencode($_GET['clicklink']) . "'
+				'" . mysql_real_escape_string(urlencode($_GET['shortcut'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['placeholder'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['buttontext'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['link'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['method'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['name'])) . "', 
+				'" . mysql_real_escape_string(urlencode($_GET['clicklink'])) . "'
 			)
 		");
 		$sql = mysql_query("
@@ -195,7 +207,7 @@ if(isset($_COOKIE['code']) && isset($_GET['action']))
 				user_id
 			) VALUES (
 				'" . mysql_fetch_array($sql)[0] . "', 
-				'" . $user["id"] . "'
+				'" . $userId . "'
 			)
 		");
 	}

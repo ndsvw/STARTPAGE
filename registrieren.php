@@ -6,9 +6,12 @@
 	if(isset($_POST['email']) && isset($_POST['password1']) && isset($_POST['password2'])){
 		if($_POST['password1'] == $_POST['password2']){
 			$query = mysql_fetch_array(mysql_query("
-				SELECT COUNT(*) 
-				FROM user 
-				WHERE mail = '" . mysql_real_escape_string($_POST['email']) . "'
+				SELECT 
+					COUNT(*) 
+				FROM 
+					user 
+				WHERE 
+					mail = '" . mysql_real_escape_string($_POST['email']) . "'
 			"));
 			if($query[0] == 0){
 				mysql_query("
@@ -19,14 +22,17 @@
 					) 
 					VALUES (
 						'" . mysql_real_escape_string($_POST['email']) . "', 
-						'" . md5(mysql_real_escape_string($_POST['password1'])) . "',
+						'" . md5($_POST['password1']) . "',
 						'0'
 					)
 				");
 				$query = mysql_fetch_array(mysql_query("
-					SELECT id 
-					FROM user 
-					WHERE mail = '" . mysql_real_escape_string($_POST['email']) . "'
+					SELECT 
+						id 
+					FROM 
+						user 
+					WHERE 
+						mail = '" . mysql_real_escape_string($_POST['email']) . "'
 				"));
 				for($i=1;$i<=5;$i++){
 					mysql_query("

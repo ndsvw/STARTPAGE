@@ -2,25 +2,21 @@
 	$anmeldung_erforderlich = true;
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
 
-	$user = mysql_fetch_array(mysql_query("
-		SELECT *
-		FROM user, sessions
-		WHERE sessions.user_id = user.id
-		AND sessions.session_code = '" . $_COOKIE['code'] . "' 
-	"));
+	$user = new User();
 
 	$anzahl_suchboxen = mysql_fetch_array(mysql_query("
 		SELECT COUNT(*)
 		FROM user, startpage_user_suchen
 		WHERE user.id = startpage_user_suchen.user_id
-		AND startpage_user_suchen.user_id = '" . $user["id"] . "'
+		AND startpage_user_suchen.user_id = '" . $user->id . "'
 	"))[0];
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<title><?php echo $user["titletext"]; ?></title>
+		<title><?php echo $user->titletext; ?></title>
 		<meta http-equiv="content-type" content="text/html" charset="utf-8">
 		<meta name="viewport" content="width=900px">
 		<meta name="robots" content="noindex,nofollow">
@@ -38,7 +34,7 @@
 			});
 		</script>
 	</head>
-	<body style="background-color: #<?php echo $user["backcolor"]; ?>">
+	<body style="background-color: #<?php echo $user->backcolor; ?>">
 		<!-- Hauptteil (erst Suchbox, dann QR/Farb-Boxen) -->
 		<div id="all">
 			<div id="searchbox" style="width: <?php echo (46 + 1 + 1 + 3) * $anzahl_suchboxen + 40 * 2; ?>px;">
@@ -47,7 +43,7 @@
 						SELECT startpage_suchen.clicklink, startpage_user_suchen.id, startpage_suchen.shortcut
 						FROM startpage_suchen, startpage_user_suchen
 						WHERE startpage_suchen.id = startpage_user_suchen.such_id
-						AND startpage_user_suchen.user_id = '" . $user['id'] . "'
+						AND startpage_user_suchen.user_id = '" . $user->id . "'
 					");
 					while($row = mysql_fetch_array($suchen))
 					{
@@ -65,21 +61,21 @@
 			<div id="main"></div>
 		</div>
 		<script>
-			Center_Parent("#main", <?php echo $user["boxsize"]; ?>);
+			Center_Parent("#main", <?php echo $user->boxsize; ?>);
 			<?php
 			$ergebnis = mysql_query("
 				SELECT * FROM startpage_boxen 
-				WHERE user = '" . $user["id"] . "'
+				WHERE user = '" . $user->id . "'
 				ORDER BY userboxid
 			 ");
 			while($row = mysql_fetch_object($ergebnis))
 			{
-				?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user['style']; ?>", "<?php echo urldecode($row->link); ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user["boxsize"]; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>");<?php				
+				?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user->style; ?>", "<?php echo urldecode($row->link); ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user->boxsize; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>");<?php				
 				echo "\n\t\t\t";						
 			}
 			echo "\n";
 			?>
-			Fill_The_Rest("#main", <?php echo $user["boxsize"]; ?>, "qr");
+			Fill_The_Rest("#main", <?php echo $user->boxsize; ?>, "qr");
 		</script>
 		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
