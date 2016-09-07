@@ -3,13 +3,9 @@
 	$seitenaufruf_nicht_speichern = true;
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
 
-	$user = mysql_fetch_array(mysql_query("
-		SELECT *
-		FROM user, sessions
-		WHERE sessions.user_id = user.id
-		AND sessions.session_code = '" . $_COOKIE['code'] . "' 
-	"));
+	$user = new User();
 
 	$sql = mysql_query("
 		SELECT
@@ -20,9 +16,9 @@
 		FROM 
 			startpage_boxen 
 		WHERE 
-			user = '" . $user["id"] . "' 
+			user = '" . $user->id . "' 
 		AND
-			userboxid = '" . $_GET['userboxid'] . "'
+			userboxid = '" . mysql_real_escape_string($_GET['userboxid']) . "'
 	");
 	$sql = mysql_fetch_array($sql);
 ?>

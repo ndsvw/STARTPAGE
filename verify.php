@@ -24,14 +24,14 @@
 					mail = '" . mysql_real_escape_string($_GET['email']) . "'
 			");
 			
-			echo "Der Account ist nun verifiziert. Du kannst dich nun <a href='login.php'>einloggen</a>. ";
-			
 			$message = "";
 			$message .= "Dein Account wurde erfolgreich aktiviert.<br />";
 			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "'>Zur Seite</a><br /><br />";
 			$mailsender = new MailSender;
 			$mailsender->sendMail($_GET['email'], "noreply@" . $_SERVER['SERVER_NAME'], "Account erfolgreich aktiviert", $message);
 			
+			$infotext = urlencode("Dein Account ist nun verifiziert. Du kannst dich nun einloggen!");
+			header("Location: /login.php?infotext=" . $infotext);
 		} else {
 			echo "Error2";
 		}
