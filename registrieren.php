@@ -1,6 +1,6 @@
 <?php 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php"); 
 	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
 
 
@@ -80,6 +80,6 @@
 			<input class="modern" type="password" name="password2" size="20" placeholder="Passwort wiederholen" style="display: inline;" /><br />
 			<input class="modern" type="submit" name="submit" value="Registrierung abschließen" style="display: inline;" />
 		</form>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

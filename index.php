@@ -80,6 +80,6 @@
 			?>
 			Fill_The_Rest("#main", <?php echo $user->boxsize; ?>, "qr");
 		</script>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>
