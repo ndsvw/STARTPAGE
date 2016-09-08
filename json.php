@@ -1,11 +1,12 @@
 <?php
-	$anmeldung_erforderlich = true;
-	$seitenaufruf_nicht_speichern = true;
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
 
 	$user = new User();
+	$view = new Seitenaufruf();
+	$view->need($view->ANMELDUNGERFORDERLICH);
+	$view->check();
 
 	if($_GET['json'] == "usersuchen"){
 		$result = mysql_query("

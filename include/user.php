@@ -1,6 +1,5 @@
 <?php
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
 
 	class User{
 		public $id;
@@ -14,7 +13,7 @@
 		public $logged_in;
 		
     		public function __construct(){
-			if(cookie_code_is_valid){
+			if($this->cookie_code_is_valid()){
 				$this->logged_in = true;
 				$this->id = $this->get_user_id_by_cookie($_COOKIE['code']);
 				$this->load_user_data_by_id($this->id);
@@ -24,7 +23,7 @@
 		}
 		
 		public function load_user_data_by_id($id){
-			$query = mysql_fetch_array(mysql_query("
+			$query = mysql_query("
 				SELECT 
 					mail,
 					accounttyp,
@@ -36,14 +35,15 @@
 					user 
 				WHERE 
 					id = $id
-			"));	
+			");	
+			$a = mysql_fetch_array($query);
 			
-			$this->email = $query[0];
-			$this->accounttyp = $query[1];
-			$this->boxsize = $query[2];
-			$this->backcolor = $query[3];
-			$this->style = $query[4];
-			$this->titletext = $query[5];
+			$this->email = $a[0];
+			$this->accounttyp = $a[1];
+			$this->boxsize = $a[2];
+			$this->backcolor = $a[3];
+			$this->style = $a[4];
+			$this->titletext = $a[5];
 		}
 		
 		public function login($email, $password){
@@ -51,7 +51,7 @@
 			$this->email = mysql_real_escape_string($email);
 			$password = md5($password);
 			
-			if(!$logged_in){
+			if(!$this->logged_in){
 				$query = mysql_fetch_array(mysql_query("
 					SELECT 
 						COUNT(*), 
@@ -80,6 +80,7 @@
 						");
 						$this->id = $this->get_user_id_by_email($email);
 						$this->load_user_data_by_id($this->id);
+						$this->logged_in = true;
 					} else {
 						echo "Dein Account ist nicht verifiziert. Bitte bestätige den Link in der Bestätigungs-Email!";
 					}
@@ -90,17 +91,20 @@
 		}
 		
 		public function logout(){
-			if($logged_in){
+			if($this->logged_in){
+				mysql_query("
+					DELETE FROM
+						sessions 
+					WHERE 
+						sessions.session_code = '" . $_COOKIE['code'] . "' 				
+				");
 				setcookie ("code", "", time() - 3600);
+				$this->logged_in = false;
 			}			
 		}
 		
-		public function is_logged_in(){
-			return $logged_in;
-		}
-		
 		public function is_verified(){
-			return $verified;
+			return $this->verified;
 		}
 		
 		

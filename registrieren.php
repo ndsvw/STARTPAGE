@@ -1,7 +1,9 @@
 <?php 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+
+
 
 	if(isset($_POST['email']) && isset($_POST['password1']) && isset($_POST['password2'])){
 		if($_POST['password1'] == $_POST['password2']){

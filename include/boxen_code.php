@@ -1,16 +1,21 @@
 <?php
 	$seitenaufruf_nicht_speichern = true;
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
 
 	$user = new User();
+	$view = new Seitenaufruf();
+	$view->need($view->ANMELDUNGERFORDERLICH);
+	$view->check();
+
 	$ergebnis = mysql_query("
 		SELECT * FROM startpage_boxen 
 		WHERE user = '" . $user->id . "'
 		AND text LIKE '%" . $_GET['search'] . "%'
 		ORDER BY userboxid
 	 ");
+
 	if(mysql_num_rows($ergebnis) > 0){
 		while($row = mysql_fetch_object($ergebnis))
 		{

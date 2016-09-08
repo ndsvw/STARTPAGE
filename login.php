@@ -1,15 +1,18 @@
 <?php
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
 
-
-if(isset($_POST['useremail']) && isset($_POST['userpassword']))
-{
 	$user = new User();
-	$user->login($_POST['useremail'], $_POST['userpassword']);
-	header("Location: /index.php");
-}
+	$view = new Seitenaufruf();
+	$view->save_view();
+
+	if(isset($_POST['useremail']) && isset($_POST['userpassword']))
+	{
+		$user = new User();
+		$user->login($_POST['useremail'], $_POST['userpassword']);
+		header("Location: /index.php");
+	}
 ?>
 <!DOCTYPE html>
 <html>

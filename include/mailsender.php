@@ -1,6 +1,5 @@
 <?php
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php");
 	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/PHPMailer/PHPMailerAutoload.php");
 
 	class MailSender{

@@ -1,8 +1,13 @@
+<?php
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+?>
+
 <div id="unten">
 	<ul id="bottom_list">
 		<li><a href="/index.php">Home</a></li>
 		<?php 
-		if(isset($_COOKIE['code'])){
+		$user = new User();
+		if($user->logged_in){
 			?><li><a href="#" id="show_popup_settings">Einstellungen</a></li><?php
 			?><li><a href="/logout.php">Logout</a></li><?php
 		}
