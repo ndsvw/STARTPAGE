@@ -80,7 +80,7 @@ textarea.modern{
 	font-size: 120%;
 }
 
-.box{
+.box, .empty_box{
 	position: relative;
 	margin-left: 10px;
 	margin-right: 10px;
@@ -92,7 +92,7 @@ textarea.modern{
 	float: left;
 	cursor: pointer;
 }
-.box:hover{
+.box:hover, .empty_box:hover{
 	-webkit-box-shadow: 0px 0px 12px 3px #A1D6FF;
 	-moz-box-shadow: 0px 0px 12px 3px #A1D6FF;
 	box-shadow: 0px 0px 12px 3px #A1D6FF;
