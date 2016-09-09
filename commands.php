@@ -237,7 +237,7 @@
 				INSERT INTO startpage_boxen_click
 					(box_id)
 				VALUES
-					('" . $a[0] . "')
+					($a[0])
 			");
 		}
 	}

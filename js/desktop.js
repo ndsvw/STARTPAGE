@@ -5,12 +5,14 @@ $dragged_element = null;
 $( document ).ready(function() {
 	
 	$("body").on('click','.box', function() {
+		var data_link = $(this).attr("data-link");
 		var lnk = Object.create(Link);
 		lnk.add_Stamm("commands.php");
 		lnk.add_Value("userboxid", $(this).attr("data-boxid"));
 		lnk.add_Value("action", "link_click");
-		lnk.open_in_Background(false);
-		//window.location.href = ($(this).attr("data-link"));
+		$.get(lnk.linkstring, function( data ) {
+			window.location.href = data_link;
+		});
 	});
 	
 	$(".box_pic").draggable({ 
