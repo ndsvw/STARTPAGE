@@ -47,7 +47,6 @@
 		-> setForegroundColor($foregroundColor)
     		-> setBackgroundColor($backgroundColor)
 		-> setPadding($padding)
-    		-> setErrorCorrection('high')
     		-> setImageType(QrCode::IMAGE_TYPE_PNG)
 		-> render();
 ?>
