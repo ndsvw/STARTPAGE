@@ -177,6 +177,7 @@ $( document ).ready(function() {
 	}
 	
 	searchbox_am_anfang = $("#searchbox").width();
+	$("#searchbox").css("display", "block");
 	$("#searchbox").css("width", searchbox_am_anfang + $("form#search-form input[type=text]").width() + $("form#search-form input[type=submit]").width());
 	
 	
