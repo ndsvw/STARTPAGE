@@ -4,6 +4,15 @@
 $dragged_element = null;
 $( document ).ready(function() {
 	
+	$("body").on('click','.box', function() {
+		var lnk = Object.create(Link);
+		lnk.add_Stamm("commands.php");
+		lnk.add_Value("userboxid", $(this).attr("data-boxid"));
+		lnk.add_Value("action", "link_click");
+		lnk.open_in_Background(false);
+		//window.location.href = ($(this).attr("data-link"));
+	});
+	
 	$(".box_pic").draggable({ 
 		container: "document", 
 		scroll: false,

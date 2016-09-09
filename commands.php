@@ -215,5 +215,30 @@
 				)
 			");
 		}
+		
+		
+		// -- -------------------- -- //
+		// -- Link-Click speichern -- //
+		// -- -------------------- -- //		
+		
+		if(isset($_GET['userboxid']) && $_GET['action'] == "link_click"){
+			$a = mysql_fetch_array(mysql_query("
+				SELECT
+					id
+				FROM
+					startpage_boxen
+				WHERE
+					user = $user->id
+				AND
+					userboxid = '" . mysql_real_escape_string($_GET['userboxid']) . "'
+			"));
+			echo $a[0];
+			mysql_query("
+				INSERT INTO startpage_boxen_click
+					(box_id)
+				VALUES
+					('" . $a[0] . "')
+			");
+		}
 	}
 ?>

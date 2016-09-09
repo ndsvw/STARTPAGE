@@ -61,15 +61,15 @@ function Fill_The_Rest(parent, boxsize, art){
 
 function Get_Qr_String(boxid, link, text, size, f_color, b_color){
 	qr_string = "";
-	qr_string += "<a href='" + link + "'>";
-	qr_string += "<div class='box' data-boxid='" + boxid + "' style='width: " + size + "px; height: " + size + "px' >";
+
+	qr_string += "<div class='box' data-boxid='" + boxid + "' data-link='" + link + "' style='width: " + size + "px; height: " + size + "px' >";
 	qr_string += "<div class='box_pic' style='width: " + size + "px; height: " + size + "px; background-image: url(\"/include/QrCode/getQrCode.php?color=" + f_color + "&bgcolor=" + b_color + "&link=" + link + "&text=" + text + "&size=" + size + "\");'>";
 	qr_string += "</div>";
 	qr_string += "<div class='box_link' title='" + text + "'>";
 	qr_string += text;
 	qr_string += "</div>";
 	qr_string += "</div>";
-	qr_string += "</a>";
+
 	return qr_string;
 }
 
