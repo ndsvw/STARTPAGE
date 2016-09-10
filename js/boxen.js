@@ -71,10 +71,10 @@ function Get_Qr_String(boxid, link, text, size, f_color, b_color){
 	return qr_string;
 }
 
-function Get_Color_String(link, text, size, f_color, b_color){
+function Get_Color_String(boxid, link, text, size, f_color, b_color){
 	color_string = "";
 	color_string += "<div class='box' data-boxid='" + boxid + "' data-link='" + link + "' style='width: " + size + "px; height: " + size + "px; background-color: #" + b_color + "'>";
-	color_string += "<div class='box_farbe_link' style='margin-top: " + ((size / 2) - (22 / 2)) + "px' title='" + text + "'>";
+	color_string += "<div class='box_farbe_link' style='padding: 8px 0px; color: #" + f_color + ";' title='" + text + "'>";
 	color_string += text;
 	color_string += "</div>"
 	color_string += "</div>";

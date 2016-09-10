@@ -180,7 +180,6 @@ $( document ).ready(function() {
 	$("#searchbox").css("display", "block");
 	$("#searchbox").css("width", searchbox_am_anfang + $("form#search-form input[type=text]").width() + $("form#search-form input[type=submit]").width());
 	
-	
 	$.get( "../json.php?json=usersuchen", function( data ) {
 		var arr = $.parseJSON(data);
 		$(".suchen_div").mouseover(function() {

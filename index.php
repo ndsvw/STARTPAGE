@@ -40,7 +40,7 @@
 	<body style="background-color: #<?php echo $user->backcolor; ?>">
 		<!-- Hauptteil (erst Suchbox, dann QR/Farb-Boxen) -->
 		<div id="all">
-			<div id="searchbox" style="display: none; width: <?php echo (46 + 1 + 1 + 3) * $anzahl_suchboxen + 40 * 2; ?>px;">
+			<div id="searchbox" style="width: <?php echo (46 + 1 + 1 + 3) * $anzahl_suchboxen + 40 * 2; ?>px;">
 				<?php
 					$suchen = mysql_query("
 						SELECT startpage_suchen.clicklink, startpage_user_suchen.id, startpage_suchen.shortcut
@@ -80,7 +80,7 @@
 			?>
 			Fill_The_Rest("#main", <?php echo $user->boxsize; ?>, "qr");
 		</script>
-		<noscript style="font-size: 2.3em;"><center style="margin-top: 200px;">Javascript erforderlich!<br />Bitte aktiviere Javascript in deinem Webbrowser!</center></noscript>
+		<noscript style="font-size: 2.3em;"><center style="margin-top: 120px;">Javascript erforderlich!<br />Bitte aktiviere Javascript in deinem Webbrowser!</center></noscript>
 		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>
