@@ -30,8 +30,11 @@
 	<label>Boxtlink</label>
 	<input class="modern" type="text" id="boxlink" maxlength="256" size="30" value="<?php echo urldecode($sql['link']); ?>" />
 	<label>Farbe</label>
-	<input class="modern" type="text" value="<?php echo $sql['forecolor']; ?>" id="boxforecolor" maxlength="6" size="6" />
+	<input class="modern color" type="text" value="<?php echo urldecode($sql['forecolor']); ?>" id="boxforecolor" maxlength="6" size="6" />
 	<label>Hintergrundfarbe</label>
-	<input class="modern" type="text" value="<?php echo $sql['backcolor']; ?>" id="boxbackcolor" maxlength="6" size="6" />
+	<input class="modern color" type="text" value="<?php echo urldecode($sql['backcolor']); ?>" id="boxbackcolor" maxlength="6" size="6" />
 	<input type="hidden" id="boxid" value="<?php echo $_GET['userboxid']; ?>" />
 </p>
+<script type="text/javascript">
+	$('.color').colorPicker();
+</script>

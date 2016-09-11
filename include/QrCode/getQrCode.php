@@ -10,6 +10,7 @@
 	$backgroundColor = array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0);
 	$padding = 5;
 
+	
 	if(isset($_GET['text'])){
 		$text = $_GET['text'];
 	}
@@ -27,18 +28,35 @@
 	}
 
 	if(isset($_GET['color'])){
-		$red = hexdec(substr("#" . $_GET['color'], 1, 2));
-		$green = hexdec(substr("#" . $_GET['color'], 3, 2));
-		$blue = hexdec(substr("#" . $_GET['color'], 5, 2));
-		$foregroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		$color = urldecode($_GET['color']);
+		if(substr($color, 0, 1) == "#"){
+			$red = hexdec(substr($color, 1, 2));
+			$green = hexdec(substr($color, 3, 2));
+			$blue = hexdec(substr($color, 5, 2));
+			$foregroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		} else { //bei rgba
+			$red = 0;
+			$green = 0;
+			$blue = 0;
+			$foregroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		}
 	}
 
 	if(isset($_GET['bgcolor'])){
-		$red = hexdec(substr("#" . $_GET['bgcolor'], 1, 2));
-		$green = hexdec(substr("#" . $_GET['bgcolor'], 3, 2));
-		$blue = hexdec(substr("#" . $_GET['bgcolor'], 5, 2));
-		$backgroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		$color = urldecode($_GET['bgcolor']);
+		if(substr($color, 0, 1) == "#"){
+			$red = hexdec(substr($color, 1, 2));
+			$green = hexdec(substr($color, 3, 2));
+			$blue = hexdec(substr($color, 5, 2));
+			$backgroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		} else { //bei rgba
+			$red = 255;
+			$green = 255;
+			$blue = 255;
+			$backgroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
+		}		
 	}
+
 
 	$qr = new QrCode;
 	$qr

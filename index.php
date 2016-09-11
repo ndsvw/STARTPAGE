@@ -28,6 +28,7 @@
 		<link rel="SHORTCUT ICON" href="/img/icon.png">
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
+		<script type="text/javascript" src="/include/tinyColorPicker/jqColorPicker.min.js"></script>
 		<script src="/js/desktop.js"></script>
 		<script src="/js/boxen.js"></script>
 		<script src="/js/popup.js"></script>
@@ -37,7 +38,7 @@
 			});
 		</script>
 	</head>
-	<body style="background-color: #<?php echo $user->backcolor; ?>">
+	<body style="background-color: <?php echo urldecode($user->backcolor); ?>">
 		<!-- Hauptteil (erst Suchbox, dann QR/Farb-Boxen) -->
 		<div id="all">
 			<div id="searchbox" style="width: <?php echo (46 + 1 + 1 + 3) * $anzahl_suchboxen + 40 * 2; ?>px;">

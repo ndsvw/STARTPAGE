@@ -197,14 +197,6 @@ $( document ).ready(function() {
 		});	
 	});
 	
-	
-	$('body').on('click','.show_popup_boxen_bearbeiten', function() {
-		$(".box").append("<div class='edit_box'></div>");
-		$(".box").append("<div class='delete_box'></div>");
-		$("#popup").remove();
-		$(".box").parent().attr("href", "#");
-	});	
-	
 	$('body').on('click','.delete_box', function() {
 		var lnk = Object.create(Link);
 		lnk.add_Stamm("commands.php");
