@@ -1,5 +1,5 @@
 <?php
-	require_once('src/QrCode.php');
+	require_once('QrCode/src/QrCode.php');
 
 	use Endroid\QrCode\QrCode;
 
@@ -10,7 +10,7 @@
 	$backgroundColor = array('r' => 255, 'g' => 255, 'b' => 255, 'a' => 0);
 	$padding = 5;
 
-	
+
 	if(isset($_GET['text'])){
 		$text = $_GET['text'];
 	}
@@ -54,7 +54,7 @@
 			$green = 255;
 			$blue = 255;
 			$backgroundColor = array('r' => $red, 'g' => $green, 'b' => $blue, 'a' => 0);
-		}		
+		}
 	}
 
 
