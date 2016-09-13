@@ -3,7 +3,7 @@
 // -- ---------- -- //
 $dragged_element = null;
 $( document ).ready(function() {
-	
+
 	$("body").on('click','.box', function() {
 		var data_link = $(this).attr("data-link");
 		var lnk = Object.create(Link);
@@ -14,9 +14,9 @@ $( document ).ready(function() {
 			window.location.href = data_link;
 		});
 	});
-	
-	$(".box_pic").draggable({ 
-		container: "document", 
+
+	$(".box_inner").draggable({
+		container: "document",
 		scroll: false,
 		revert: true,
 		start: function(){
@@ -28,7 +28,7 @@ $( document ).ready(function() {
 			}, 800, function() {
 			    	// Animation complete.
 			});
-			
+
 			$( "#delete_area" ).css("display", "block");
 			$( "#delete_area" ).animate({
 				opacity: 1,
@@ -36,14 +36,14 @@ $( document ).ready(function() {
 			}, 800, function() {
 			    	// Animation complete.
 			});
-			
+
 			$(this).css("z-index", "2");
 			$("#main").css("height", $("#main").height() + $( "#delete_area" ).height());
 		},
 		stop: function( event, ui ) {
 			$dragged_element.css("z-index", "auto");
 			$("#main").css("height", $("#main").height() - $( "#delete_area" ).height());
-			
+
 			$("#edit_area").animate({
 				opacity: 0,
 				width: "0%",
@@ -59,24 +59,32 @@ $( document ).ready(function() {
 			});
 		}
 	});
-	
-	$(".box").droppable({ 
+
+	$(".box").droppable({
 		hoverClass: "box_with_hover_effect",
-		accept: ".box_pic",
+		accept: ".box_inner",
 		drop: function(){
 			drag_box_id = $dragged_element.parent().attr("data-boxid");
 			drop_box_id = $(this).attr("data-boxid");
 			if(drag_box_id != drop_box_id){
-				dragged_img = $dragged_element.css("background-image");
-				dragged_text = $dragged_element.parent().find("div.box_link").html();
-				dragged_link = $dragged_element.parent().parent().attr("href");
-				$dragged_element.css("background-image", $(this).find("div.box_pic").css("background-image"));
-				$dragged_element.parent().find("div.box_link").html($(this).find("div.box_link").html());
-				$dragged_element.parent().parent().attr("href", $(this).parent().attr("href"));
-				$(this).find("div.box_pic").css("background-image", dragged_img);
-				$(this).find("div.box_link").html(dragged_text);
-				$(this).parent().attr("href", dragged_link)
-			
+				if($(this).attr("data-style") == "color"){
+					dragged_text = $dragged_element.find("div.box_farbe_link").html();
+					dragged_link = $dragged_element.parent().attr("data-link");
+					$dragged_element.find("div.box_farbe_link").html($(this).find("div.box_inner").find("div.box_farbe_link").html());
+					$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
+					$(this).find("div.box_inner").find("div.box_farbe_link").html(dragged_text);
+					$(this).attr("data-link", dragged_link);
+				} else if($(this).attr("data-style") == "qr"){
+					dragged_img = $dragged_element.css("background-image");
+					dragged_text = $dragged_element.parent().find("div.box_link").html();
+					dragged_link = $dragged_element.parent().attr("data-link");
+					$dragged_element.css("background-image", $(this).find("div.box_pic").css("background-image"));
+					$dragged_element.parent().find("div.box_link").html($(this).find("div.box_link").html());
+					$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
+					$(this).find("div.box_pic").css("background-image", dragged_img);
+					$(this).find("div.box_link").html(dragged_text);
+					$(this).attr("data-link", dragged_link);
+				}
 				var lnk = Object.create(Link);
 				lnk.add_Stamm("commands.php");
 				lnk.add_Value("action", "boxen_tauschen");
@@ -86,7 +94,7 @@ $( document ).ready(function() {
 			}
 		}
 	});
-	
+
 	$("#edit_area, #delete_area").droppable({
 		hoverClass: "area_with_hover_effects",
 		accept: ".box_pic",
@@ -140,17 +148,17 @@ $( document ).ready(function() {
 			}
 		}
 	});
-	
+
 	//
-	
+
 	function urlencode(value){
 		var new_value = encodeURIComponent(value);
-		return new_value;		
+		return new_value;
 	}
 	function urldecode(value){
 		var new_value = decodeURIComponent(value);
 		var new_value = new_value.replace('+', ' ');
-		return new_value;		
+		return new_value;
 	}
 	var Link = {
 	  	linkstring: "",
@@ -175,11 +183,11 @@ $( document ).ready(function() {
 			});
 		}
 	}
-	
+
 	searchbox_am_anfang = $("#searchbox").width();
 	$("#searchbox").css("display", "block");
 	$("#searchbox").css("width", searchbox_am_anfang + $("form#search-form input[type=text]").width() + $("form#search-form input[type=submit]").width());
-	
+
 	$.get( "../json.php?json=usersuchen", function( data ) {
 		var arr = $.parseJSON(data);
 		$(".suchen_div").mouseover(function() {
@@ -194,18 +202,18 @@ $( document ).ready(function() {
 					$("#search-form input[type=text]").select();
 				}
 			}
-		});	
+		});
 	});
-	
+
 	$('body').on('click','.delete_box', function() {
 		var lnk = Object.create(Link);
 		lnk.add_Stamm("commands.php");
 		lnk.add_Value("action", "box_loeschen")
 		lnk.add_Value("userboxid", $(this).parent().attr("data-boxid"));
 		lnk.open_in_Background(true);
-	});	
-	
-	$('#main_input').on('input', function() { 
+	});
+
+	$('#main_input').on('input', function() {
 		$("#main").html("");
 	    	$.ajax({
 	  		url: "include/boxen_code.php?search=" + $('#main_input').val(),
