@@ -53,6 +53,9 @@ function Fill_The_Rest(parent, boxsize, art){
 
 	$(parent).css("min-height", (boxsize + 1 + 40) * $max_boxen_pro_spalte + "px");
 
+	if($vorhandene_boxen % $max_boxen_pro_reihe == 0){
+		$(parent).append("<img class='add_box_icon show_popup_neue_box' src='img/ic_add_black_48dp_2x.png' style='top: " + ($(parent).height() - 60 / 2) + "px;'>");
+	}
 }
 
 function Clear_All(parent){
