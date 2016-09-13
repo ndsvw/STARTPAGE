@@ -1,7 +1,7 @@
 <?php
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php");
 
 	$user = new User();
 	$view = new Seitenaufruf();
@@ -26,6 +26,7 @@
 		<link rel="stylesheet" href="/css/style.css" type="text/css" />
 		<link rel="stylesheet" href="/css/jquery-ui.css" type="text/css" />
 		<link rel="SHORTCUT ICON" href="/img/icon.png">
+		<link href="https://fonts.googleapis.com/css?family=Baloo+Paaji" rel="stylesheet">
 		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 		<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="/include/tinyColorPicker/jqColorPicker.min.js"></script>
@@ -54,13 +55,13 @@
 						echo "<a href='" . urldecode($row[0]) . "'>";
 						echo "<div class='suchen_div' data-suche='" . $row[1] . "' >" . $row[2] . "</div>";
 						echo "</a>";
-					}						
+					}
 				?>
 				<form id="search-form" action="https://eu4.startpage.com/do/search?nosteeraway=1&abp=1&cat=web&language=deutsch&prf=923be3e041a9875da96b0153b30c6ab7&cmd=process_search&engine0=v1all&lui=deutsch" method="post">
-					<input class="modern" type="text" id="main_input" style="margin-left: 10px;" name="query" size="47" dir="auto" placeholder="Startpage-Suche (SSL)" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus /> 
+					<input class="modern" type="text" id="main_input" style="margin-left: 10px;" name="query" size="47" dir="auto" placeholder="Startpage-Suche (SSL)" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus />
 					<input class="modern" type="submit" id="main_submit" value="Suchen"/>
 				</form>
-				
+
 			</div>
 			<div id="main"></div>
 		</div>
@@ -68,14 +69,14 @@
 			Center_Parent("#main", <?php echo $user->boxsize; ?>);
 			<?php
 			$ergebnis = mysql_query("
-				SELECT * FROM startpage_boxen 
+				SELECT * FROM startpage_boxen
 				WHERE user = '" . $user->id . "'
 				ORDER BY userboxid
 			 ");
 			while($row = mysql_fetch_object($ergebnis))
 			{
-				?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user->style; ?>", "<?php echo urldecode($row->link); ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user->boxsize; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>");<?php				
-				echo "\n\t\t\t";						
+				?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user->style; ?>", "<?php echo urldecode($row->link); ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user->boxsize; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>");<?php
+				echo "\n\t\t\t";
 			}
 			echo "\n";
 			?>
