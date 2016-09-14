@@ -2,8 +2,8 @@
 // -- desktop.js -- //
 // -- ---------- -- //
 $dragged_element = null;
+var requ;
 $( document ).ready(function() {
-
 	$("body").on('click','.box', function() {
 		var data_link = $(this).attr("data-link");
 		var lnk = Object.create(Link);
@@ -214,10 +214,22 @@ $( document ).ready(function() {
 	});
 
 	$('#main_input').on('input', function() {
-		$("#main").html("");
-	    	$.ajax({
-	  		url: "include/boxen_code.php?search=" + $('#main_input').val(),
-	  		dataType: "script"
-		});
+		get_boxes_by_searchinput();
 	});
+
+	function get_boxes_by_searchinput(){
+		if(requ == null || (requ.readyState == 4 || requ.readyState == 0)){
+			$("#main").empty();
+			requ = $.ajax({
+		  		url: "include/boxen_code.php?search=" + $('#main_input').val(),
+		  		dataType: "script"
+			});
+		} else {
+			window.setTimeout(function() {
+				$("#main").empty();
+			    get_boxes_by_searchinput();
+			}, 100);
+		}
+	}
+
 });
