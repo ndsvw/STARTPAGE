@@ -97,7 +97,7 @@ $( document ).ready(function() {
 
 	$("#edit_area, #delete_area").droppable({
 		hoverClass: "area_with_hover_effects",
-		accept: ".box_pic",
+		accept: ".box_inner",
 		drop: function(){
 			$id = $dragged_element.parent().attr("data-boxid")
 			if($(this).attr("id") == "delete_area"){
