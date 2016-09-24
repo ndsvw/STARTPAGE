@@ -2,6 +2,7 @@
 // -- desktop.js -- //
 // -- ---------- -- //
 $dragged_element = null;
+$dropped_into_edit_delete = false;
 var requ;
 $( document ).ready(function() {
 	$("body").on('click','.box', function() {
@@ -60,45 +61,12 @@ $( document ).ready(function() {
 		}
 	});
 
-	$(".box").droppable({
-		hoverClass: "box_with_hover_effect",
-		accept: ".box_inner",
-		drop: function(){
-			drag_box_id = $dragged_element.parent().attr("data-boxid");
-			drop_box_id = $(this).attr("data-boxid");
-			if(drag_box_id != drop_box_id){
-				if($(this).attr("data-style") == "color"){
-					dragged_text = $dragged_element.find("div.box_farbe_link").html();
-					dragged_link = $dragged_element.parent().attr("data-link");
-					$dragged_element.find("div.box_farbe_link").html($(this).find("div.box_inner").find("div.box_farbe_link").html());
-					$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
-					$(this).find("div.box_inner").find("div.box_farbe_link").html(dragged_text);
-					$(this).attr("data-link", dragged_link);
-				} else if($(this).attr("data-style") == "qr"){
-					dragged_img = $dragged_element.css("background-image");
-					dragged_text = $dragged_element.parent().find("div.box_link").html();
-					dragged_link = $dragged_element.parent().attr("data-link");
-					$dragged_element.css("background-image", $(this).find("div.box_pic").css("background-image"));
-					$dragged_element.parent().find("div.box_link").html($(this).find("div.box_link").html());
-					$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
-					$(this).find("div.box_pic").css("background-image", dragged_img);
-					$(this).find("div.box_link").html(dragged_text);
-					$(this).attr("data-link", dragged_link);
-				}
-				var lnk = Object.create(Link);
-				lnk.add_Stamm("commands.php");
-				lnk.add_Value("action", "boxen_tauschen");
-				lnk.add_Value("userboxid1", urlencode(drag_box_id))
-				lnk.add_Value("userboxid2", urlencode(drop_box_id));
-				lnk.open_in_Background(false);
-			}
-		}
-	});
 
 	$("#edit_area, #delete_area").droppable({
 		hoverClass: "area_with_hover_effects",
 		accept: ".box_inner",
 		drop: function(){
+			$dropped_into_edit_delete = true;
 			$id = $dragged_element.parent().attr("data-boxid")
 			if($(this).attr("id") == "delete_area"){
 				var lnk = Object.create(Link);
@@ -145,6 +113,44 @@ $( document ).ready(function() {
 						duration: 1000
 					}
 				});
+			}
+		}
+	});
+
+	$(".box").droppable({
+		hoverClass: "box_with_hover_effect",
+		accept: ".box_inner",
+		drop: function(){
+			if($dropped_into_edit_delete == false){
+				drag_box_id = $dragged_element.parent().attr("data-boxid");
+				drop_box_id = $(this).attr("data-boxid");
+				if(drag_box_id != drop_box_id){
+					if($(this).attr("data-style") == "color"){
+						dragged_text = $dragged_element.find("div.box_farbe_link").html();
+						dragged_link = $dragged_element.parent().attr("data-link");
+						$dragged_element.find("div.box_farbe_link").html($(this).find("div.box_inner").find("div.box_farbe_link").html());
+						$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
+						$(this).find("div.box_inner").find("div.box_farbe_link").html(dragged_text);
+						$(this).attr("data-link", dragged_link);
+					} else if($(this).attr("data-style") == "qr"){
+						dragged_img = $dragged_element.css("background-image");
+						dragged_text = $dragged_element.parent().find("div.box_link").html();
+						dragged_link = $dragged_element.parent().attr("data-link");
+						$dragged_element.css("background-image", $(this).find("div.box_pic").css("background-image"));
+						$dragged_element.parent().find("div.box_link").html($(this).find("div.box_link").html());
+						$dragged_element.parent().attr("data-link", $(this).attr("data-link"));
+						$(this).find("div.box_pic").css("background-image", dragged_img);
+						$(this).find("div.box_link").html(dragged_text);
+						$(this).attr("data-link", dragged_link);
+					}
+					var lnk = Object.create(Link);
+					lnk.add_Stamm("commands.php");
+					lnk.add_Value("action", "boxen_tauschen");
+					lnk.add_Value("userboxid1", urlencode(drag_box_id))
+					lnk.add_Value("userboxid2", urlencode(drop_box_id));
+					lnk.open_in_Background(false);
+				}
+				dropped_into_edit_delete = false;
 			}
 		}
 	});
