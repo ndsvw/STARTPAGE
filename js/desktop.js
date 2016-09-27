@@ -8,7 +8,7 @@ $( document ).ready(function() {
 	$("body").on('click','.box', function() {
 		var data_link = $(this).attr("data-link");
 		var lnk = Object.create(Link);
-		lnk.add_Stamm("commands.php");
+		lnk.add_Stamm("/commands.php");
 		lnk.add_Value("userboxid", $(this).attr("data-boxid"));
 		lnk.add_Value("action", "link_click");
 		$.get(lnk.linkstring, function( data ) {
@@ -70,7 +70,7 @@ $( document ).ready(function() {
 			$id = $dragged_element.parent().attr("data-boxid")
 			if($(this).attr("id") == "delete_area"){
 				var lnk = Object.create(Link);
-				lnk.add_Stamm("commands.php");
+				lnk.add_Stamm("/commands.php");
 				lnk.add_Value("userboxid", $id)
 				lnk.add_Value("action", "box_loeschen");
 				lnk.open_in_Background(true);
@@ -93,7 +93,7 @@ $( document ).ready(function() {
 							text: "Box speichern",
 							click: function(){
 								var lnk = Object.create(Link);
-								lnk.add_Stamm("commands.php");
+								lnk.add_Stamm("/commands.php");
 								lnk.add_Value("action", "box_speichern");
 								lnk.add_Value("userboxid", $("#boxid").val());
 								lnk.add_Value("boxtext", urlencode($("#boxtext").val()));
@@ -144,7 +144,7 @@ $( document ).ready(function() {
 						$(this).attr("data-link", dragged_link);
 					}
 					var lnk = Object.create(Link);
-					lnk.add_Stamm("commands.php");
+					lnk.add_Stamm("/commands.php");
 					lnk.add_Value("action", "boxen_tauschen");
 					lnk.add_Value("userboxid1", urlencode(drag_box_id))
 					lnk.add_Value("userboxid2", urlencode(drop_box_id));
@@ -213,7 +213,7 @@ $( document ).ready(function() {
 
 	$('body').on('click','.delete_box', function() {
 		var lnk = Object.create(Link);
-		lnk.add_Stamm("commands.php");
+		lnk.add_Stamm("/commands.php");
 		lnk.add_Value("action", "box_loeschen")
 		lnk.add_Value("userboxid", $(this).parent().attr("data-boxid"));
 		lnk.open_in_Background(true);

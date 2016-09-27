@@ -7,34 +7,34 @@ $( document ).ready(function() {
 	$popup_layout_bearbeiten_code = "";
 	$popup_neue_box_code = "";
 	$popup_suchen_code = "";
-	
+
 	$.get("include/popup_settings.php", function( data ) {
 	  	$popup_settings_code = data;
 	});
-	
+
 	$.get("include/popup_layout_bearbeiten.php", function( data ) {
 	  	$popup_layout_bearbeiten_code = data;
 	});
-	
+
 	$.get("include/popup_neue_box.php", function( data ) {
 	  	$popup_neue_box_code = data;
 	});
-	
+
 	$.get("include/popup_suchen.php", function( data ) {
 	  	$popup_suchen_code = data;
 	});
 
-	
+
 	function urlencode(value){
 		var new_value = encodeURIComponent(value);
-		return new_value;		
+		return new_value;
 	}
 	function urldecode(value){
 		var new_value = decodeURIComponent(value);
 		var new_value = new_value.replace('+', ' ');
-		return new_value;		
+		return new_value;
 	}
-	
+
 	var Link = {
 	  	linkstring: "",
 		counter: 0,
@@ -57,7 +57,7 @@ $( document ).ready(function() {
 				}
 			});
 		}
-	}	
+	}
 
 	$('body').on('click','#show_popup_settings', function() {
 		$("body").append("<div id='dialog'></div>");
@@ -96,7 +96,7 @@ $( document ).ready(function() {
 						}
 
 						var lnk = Object.create(Link);
-						lnk.add_Stamm("commands.php");
+						lnk.add_Stamm("/commands.php");
 						lnk.add_Value("action", "neue_suche_speichern");
 						lnk.add_Value("shortcut", urlencode($("#neue_suche_shortcut").val()));
 						lnk.add_Value("placeholder", urlencode($("#neue_suche_placeholder").val()));
@@ -141,7 +141,7 @@ $( document ).ready(function() {
 						}
 
 						var lnk = Object.create(Link);
-						lnk.add_Stamm("commands.php");
+						lnk.add_Stamm("/commands.php");
 						lnk.add_Value("action", "layout_bearbeiten");
 						lnk.add_Value("boxsize", $("#new_boxsize").val());
 						lnk.add_Value("bodybackcolor", urlencode($("#bodybackcolor").val()));
@@ -149,7 +149,7 @@ $( document ).ready(function() {
 						lnk.open_in_Background(true);
 					}
 				}
-			], 
+			],
 			show: {
 				effect: "blind",
 				duration: 1000
@@ -159,8 +159,8 @@ $( document ).ready(function() {
 				duration: 1000
 			}
 		});
-	});	
-	
+	});
+
 	$('body').on('click','.show_popup_neue_box', function() {
 		$("body").append("<div id='dialog'></div>");
 		$("#dialog").html($popup_neue_box_code);
@@ -176,7 +176,7 @@ $( document ).ready(function() {
 					text: "Box erstellen",
 					click: function(){
 						var lnk = Object.create(Link);
-						lnk.add_Stamm("commands.php");
+						lnk.add_Stamm("/commands.php");
 						lnk.add_Value("action", "box_hinzufuegen");
 						lnk.add_Value("boxtext", urlencode($("#boxtext").val()));
 						lnk.add_Value("boxlink", urlencode($("#boxlink").val()));
@@ -196,12 +196,12 @@ $( document ).ready(function() {
 			}
 		});
 	});
-	
+
 	$('body').on('click','.edit_box', function() {
 		var lnk = Object.create(Link);
 		lnk.add_Stamm("include/popup_box_bearbeiten.php");
 		lnk.add_Value("userboxid", $(this).parent().attr("data-boxid"));
-		
+
 		$("body").append("<div id='dialog'></div>");
 		$("#dialog").load(lnk.linkstring);
 		$("#dialog").dialog({
@@ -216,7 +216,7 @@ $( document ).ready(function() {
 					text: "Box speichern",
 					click: function(){
 						var lnk = Object.create(Link);
-						lnk.add_Stamm("commands.php");
+						lnk.add_Stamm("/commands.php");
 						lnk.add_Value("action", "box_speichern");
 						lnk.add_Value("userboxid", $("#boxid").val());
 						lnk.add_Value("boxtext", urlencode($("#boxtext").val()));
@@ -236,5 +236,5 @@ $( document ).ready(function() {
 				duration: 1000
 			}
 		});
-	});	
+	});
 });
