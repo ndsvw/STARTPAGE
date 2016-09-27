@@ -38,9 +38,9 @@ function Fill_The_Rest(parent, boxsize, art){
 	$vorhandene_boxen = $('.box').length;
 	$max_boxen_pro_spalte = Math.ceil($vorhandene_boxen / $max_boxen_pro_reihe);
 	$max_boxen = $max_boxen_pro_spalte * $max_boxen_pro_reihe;
-	
+
 	freier_platz = $max_boxen - $vorhandene_boxen;
-	
+
 	for(var i = 1; i <= freier_platz; i++){
 		Create_Empty_Box(parent, boxsize);
 	}
@@ -50,10 +50,18 @@ function Fill_The_Rest(parent, boxsize, art){
 			Create_Empty_Box(parent, boxsize);
 		}
 	}
-	
-	$(parent).css("min-height", (boxsize + 1 + 40) * $max_boxen_pro_spalte + "px");
-	
+
+	$(parent).css("min-height", (boxsize + 1 + 40) * $max_boxen_pro_spalte + 10 + "px");
+
+	if($vorhandene_boxen % $max_boxen_pro_reihe == 0){
+		$(parent).append("<img class='add_box_icon show_popup_neue_box' src='img/ic_add_black_48dp_2x.png' style='top: " + ($(parent).height() - 60 / 2) + "px;'>");
+	}
 }
+
+function Clear_All(parent){
+	$(parent).html("");
+}
+
 
 // -- -------- -- //
 // -- returner -- //
@@ -61,35 +69,31 @@ function Fill_The_Rest(parent, boxsize, art){
 
 function Get_Qr_String(boxid, link, text, size, f_color, b_color){
 	qr_string = "";
-	qr_string += "<a href='" + link + "'>";
-	qr_string += "<div class='box' data-boxid='" + boxid + "' style='width: " + size + "px; height: " + size + "px' >";
-	qr_string += "<div class='box_pic' style='width: " + size + "px; height: " + size + "px; background-image: url(\"/include/QrCode/getQrCode.php?color=" + f_color + "&bgcolor=" + b_color + "&link=" + link + "&text=" + text + "&size=" + size + "\");'>";
+	qr_string += "<div class='box' data-boxid='" + boxid + "' data-style='qr' data-link='" + link + "' style='width: " + size + "px; height: " + size + "px' >";
+	qr_string += "<div class='box_inner box_pic' style='width: " + size + "px; height: " + size + "px; background-image: url(\"/include/getQrCode.php?color=" + f_color + "&bgcolor=" + b_color + "&link=" + link + "&text=" + text + "&size=" + size + "\");'>";
 	qr_string += "</div>";
 	qr_string += "<div class='box_link' title='" + text + "'>";
 	qr_string += text;
 	qr_string += "</div>";
 	qr_string += "</div>";
-	qr_string += "</a>";
 	return qr_string;
 }
 
-function Get_Color_String(link, text, size, f_color, b_color){
+function Get_Color_String(boxid, link, text, size, f_color, b_color){
 	color_string = "";
-	color_string += "<a href='" + link + "'>";
-	color_string += "<div class='box' data-boxid='" + boxid + "' style='width: " + size + "px; height: " + size + "px; background-color: #" + b_color + "'>";
-	color_string += "<div class='box_farbe_link' style='margin-top: " + ((size / 2) - (22 / 2)) + "px' title='" + text + "'>";
+	color_string += "<div class='box' data-boxid='" + boxid + "' data-style='color' data-link='" + link + "' style='width: " + size + "px; height: " + size + "px; background-color: " + b_color + "'>";
+	color_string += "<div class='box_inner' style='height: 100%;'>";
+	color_string += "<div class='box_farbe_link' style='padding: 8px 0px; color: " + f_color + ";' title='" + text + "'>";
 	color_string += text;
-	color_string += "</div>"
 	color_string += "</div>";
-	color_string += "</a>";
+	color_string += "</div>";
+	color_string += "</div>";
 	return color_string;
 }
-	
+
 function Get_Empty_String(size){
 	empty_string = "";
-	empty_string += "<a class='show_popup_neue_box'>";
-	empty_string += "<div class='box' data-boxid='" + ($(".box").length + 1) + "' style='width: " + size + "px; height: " + size + "px;'>";
+	empty_string += "<div class='empty_box show_popup_neue_box' data-boxid='" + ($(".box").length + 1) + "' style='width: " + size + "px; height: " + size + "px;'>";
 	empty_string += "</div>";
-	empty_string += "</a>";
 	return empty_string;
 }

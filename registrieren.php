@@ -1,14 +1,19 @@
 <?php 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+
+
 
 	if(isset($_POST['email']) && isset($_POST['password1']) && isset($_POST['password2'])){
 		if($_POST['password1'] == $_POST['password2']){
 			$query = mysql_fetch_array(mysql_query("
-				SELECT COUNT(*) 
-				FROM user 
-				WHERE mail = '" . mysql_real_escape_string($_POST['email']) . "'
+				SELECT 
+					COUNT(*) 
+				FROM 
+					user 
+				WHERE 
+					mail = '" . mysql_real_escape_string($_POST['email']) . "'
 			"));
 			if($query[0] == 0){
 				mysql_query("
@@ -19,18 +24,21 @@
 					) 
 					VALUES (
 						'" . mysql_real_escape_string($_POST['email']) . "', 
-						'" . md5(mysql_real_escape_string($_POST['password1'])) . "',
+						'" . md5($_POST['password1']) . "',
 						'0'
 					)
 				");
 				$query = mysql_fetch_array(mysql_query("
-					SELECT id 
-					FROM user 
-					WHERE mail = '" . mysql_real_escape_string($_POST['email']) . "'
+					SELECT 
+						id 
+					FROM 
+						user 
+					WHERE 
+						mail = '" . mysql_real_escape_string($_POST['email']) . "'
 				"));
 				for($i=1;$i<=5;$i++){
 					mysql_query("
-						INSERT INTO desktop_user_suchen (
+						INSERT INTO startpage_user_suchen (
 							user_id, 
 							such_id
 						) 
@@ -72,6 +80,6 @@
 			<input class="modern" type="password" name="password2" size="20" placeholder="Passwort wiederholen" style="display: inline;" /><br />
 			<input class="modern" type="submit" name="submit" value="Registrierung abschließen" style="display: inline;" />
 		</form>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

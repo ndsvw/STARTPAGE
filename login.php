@@ -1,36 +1,18 @@
 <?php
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
 
-function rand_string($lng)
-{
-	mt_srand(crc32(microtime()));
-	$buchstaben = "abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
-	$str_lng = strlen($buchstaben)-1;
-	$rand= "";
-	for($i=0;$i<$lng;$i++){
-		$rand.= $buchstaben{mt_rand(0, $str_lng)};
-	}		
-	return $rand;
-} 
+	$user = new User();
+	$view = new Seitenaufruf();
+	$view->save_view();
 
-if(isset($_POST['useremail']) && isset($_POST['userpassword']))
-{
-	$user = mysql_fetch_array(mysql_query("SELECT COUNT(*), id, verified FROM user WHERE mail = '" . $_POST['useremail'] . "' AND password = '" . md5($_POST['userpassword']) . "' "));
-	if($user[0] > 0)
+	if(isset($_POST['useremail']) && isset($_POST['userpassword']))
 	{
-		if($user[2] == '1'){
-			$code = rand_string(64);
-			setcookie("code", $code, time()+(60 * 60 * 24 * 365));
-			mysql_query("INSERT INTO sessions (user_id, session_code) VALUES (" . $user[1] . ", '" . $code . "')");
-			header("Location: /index.php");
-		} else {
-			echo "Dein Account ist nicht verifiziert. Bitte bestätige den Link in der bestätigungs-Email!";
-		}
-	} else {
-		echo "Falsche Email-Adresse oder falches Passwort!";
+		$user = new User();
+		$user->login($_POST['useremail'], $_POST['userpassword']);
+		header("Location: /index.php");
 	}
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -56,6 +38,6 @@ if(isset($_POST['useremail']) && isset($_POST['userpassword']))
 		</form><br />
 		oder: &nbsp; <a href="registrieren.php">Registrieren</a> &nbsp; <a href="#" onclick="alert('Pech gehabt!');">Passwort vergessen</a><br />
 		<noscript>Zur optimalen Nutzung der Seite muss Javascript aktiviert sein</noscript>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

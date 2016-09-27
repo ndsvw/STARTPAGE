@@ -1,29 +1,26 @@
 <?php	
-$anmeldung_erforderlich = true;
-$seitenaufruf_nicht_speichern = true;
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
-
-$user = mysql_fetch_array(mysql_query("
-	SELECT *
-	FROM user, sessions
-	WHERE sessions.user_id = user.id
-	AND sessions.session_code = '" . $_COOKIE['code'] . "' 
-"));
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+	
+	$user = new User();
+	$view = new Seitenaufruf();
+	$view->need($view->ANMELDUNGERFORDERLICH);
+	$view->check();
 ?>
 
 <h2>Verwendete Suchen</h2>
 <?php
-$suchen = mysql_query("
-	SELECT desktop_suchen.inputtext
-	FROM desktop_suchen, desktop_user_suchen
-	WHERE desktop_suchen.id = desktop_user_suchen.such_id
-	AND desktop_user_suchen.user_id = '" . $user["id"] . "' 
-");
-while($row = mysql_fetch_array($suchen))
-{
-	echo urldecode($row[0]) . "<br />";
-}
+	$suchen = mysql_query("
+		SELECT startpage_suchen.inputtext
+		FROM startpage_suchen, startpage_user_suchen
+		WHERE startpage_suchen.id = startpage_user_suchen.such_id
+		AND startpage_user_suchen.user_id = '" . $user->id . "' 
+	");
+	while($row = mysql_fetch_array($suchen))
+	{
+		echo urldecode($row[0]) . "<br />";
+	}
 ?>			
 <hr />
 <h2>Neue Suche hinzufügen</h2>

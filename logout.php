@@ -1,9 +1,14 @@
 <?php
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
-	setcookie ("code", "", time() - 3600);
-	$infotext = urlencode("Logout erfolgreich!");
-	header("Location: /login.php?infotext=" . $infotext);
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+
+	$user = new User();
+	$view = new Seitenaufruf();
+	$view->need($view->ANMELDUNGERFORDERLICH);
+	$view->check();
+	$view->save_view();
+	$user->logout();
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,6 +24,6 @@
 		<p style="text-align: center;">
 			<a href="index.php">weiter</a>
 		</p>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

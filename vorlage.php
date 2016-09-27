@@ -1,9 +1,12 @@
 <?php 
-	//$anmeldung_erforderlich = true;
-	//$adminrechte_erforderlich = true; $familienrechte_erforderlich = true;
-	//$seitenaufruf_nicht_speichern = true;
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/check.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+
+	$user = new User();
+	$view = new Seitenaufruf();
+	$view->need($view->ANMELDUNGERFORDERLICH); // $view->ANMELDUNGERFORDERLICH || $view->SPEZIALRECHTE || $view->ADMINRECHTE
+	$view->check();
+	$view->save_view(); // or not
 ?>
 <!DOCTYPE html>
 <html>
@@ -17,6 +20,6 @@
 	</head>
 	<body>
 		<h1></h1>
-		<?php include(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
+		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

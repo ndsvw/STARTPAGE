@@ -4,7 +4,10 @@
 	<label for="email">Boxtlink</label>
 	<input type="text" class="modern" id="boxlink" class="text ui-widget-content ui-corner-all">
 	<label for="password">Farbe</label>
-	<input type="text" class="modern" id="boxforecolor" value="000000" class="text ui-widget-content ui-corner-all">
+	<input type="text" class="modern color" id="boxforecolor" value="#000000" class="text ui-widget-content ui-corner-all">
 	<label for="password">Hintergrundfarbe</label>
-	<input type="text" class="modern" id="boxbackcolor" value="FFFFFF" class="text ui-widget-content ui-corner-all">
+	<input type="text" class="modern color" id="boxbackcolor" value="#FFFFFF" class="text ui-widget-content ui-corner-all">
 </fieldset>
+<script type="text/javascript">
+	$('.color').colorPicker();
+</script>
