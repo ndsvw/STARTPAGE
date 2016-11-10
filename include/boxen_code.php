@@ -19,7 +19,7 @@
 	if(mysql_num_rows($ergebnis) > 0){
 		while($row = mysql_fetch_object($ergebnis))
 		{
-			?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user->style; ?>", "<?php echo urldecode($row->link); ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user->boxsize; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>", false);<?php
+			?>Create_Box("#main", <?php echo $row->userboxid; ?>, "<?php echo $user->style; ?>", "<?php echo $row->link; ?>", "<?php echo urldecode($row->text); ?>", <?php echo $user->boxsize; ?>, "<?php echo $row->forecolor; ?>", "<?php echo $row->backcolor; ?>", false);<?php
 			echo "\n\t\t\t";
 		}
 		echo "\n";

@@ -5,17 +5,6 @@ $dragged_element = null;
 $dropped_into_edit_delete = false;
 var requ;
 $( document ).ready(function() {
-	$("body").on('click','.box', function() {
-		var data_link = $(this).attr("data-link");
-		var lnk = Object.create(Link);
-		lnk.add_Stamm("/commands.php");
-		lnk.add_Value("userboxid", $(this).attr("data-boxid"));
-		lnk.add_Value("action", "link_click");
-		$.get(lnk.linkstring, function( data ) {
-			window.location.href = data_link;
-		});
-	});
-
 	$(".box_inner").draggable({
 		container: "document",
 		scroll: false,
