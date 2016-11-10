@@ -21,25 +21,27 @@ $( document ).ready(function() {
 		scroll: false,
 		revert: true,
 		start: function(){
-			$dragged_element = $(this);
-			$( "#edit_area" ).css("display", "block");
-			$( "#edit_area" ).animate({
-				opacity: 1,
-			    	width: "50%",
-			}, 800, function() {
-			    	// Animation complete.
-			});
+			if($(this).parent().attr("data-editanddeleteable") == "true"){
+				$dragged_element = $(this);
+				$( "#edit_area" ).css("display", "block");
+				$( "#edit_area" ).animate({
+					opacity: 1,
+				    	width: "50%",
+				}, 800, function() {
+				    	// Animation complete.
+				});
 
-			$( "#delete_area" ).css("display", "block");
-			$( "#delete_area" ).animate({
-				opacity: 1,
-			    	width: "50%",
-			}, 800, function() {
-			    	// Animation complete.
-			});
+				$( "#delete_area" ).css("display", "block");
+				$( "#delete_area" ).animate({
+					opacity: 1,
+				    	width: "50%",
+				}, 800, function() {
+				    	// Animation complete.
+				});
 
-			$(this).css("z-index", "2");
-			$("#main").css("height", $("#main").height() + $( "#delete_area" ).height());
+				$(this).css("z-index", "2");
+				$("#main").css("height", $("#main").height() + $( "#delete_area" ).height());
+			}
 		},
 		stop: function( event, ui ) {
 			$dragged_element.css("z-index", "auto");
