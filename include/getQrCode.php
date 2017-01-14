@@ -62,9 +62,10 @@
 	$qr
 		-> setText($hyperlink)
 		-> setSize($size)
+		-> setErrorCorrection(QrCode::LEVEL_LOW)
 		-> setForegroundColor($foregroundColor)
-    		-> setBackgroundColor($backgroundColor)
+		-> setBackgroundColor($backgroundColor)
 		-> setPadding($padding)
-    		-> setImageType(QrCode::IMAGE_TYPE_PNG)
+		-> setImageType(QrCode::IMAGE_TYPE_JPEG)
 		-> render();
 ?>

@@ -2,7 +2,7 @@
 // -- boxen.js -- //
 // -- -------- -- //
 
-$max_boxen_pro_reihe = 0;
+/*$max_boxen_pro_reihe = 0;
 $max_boxen_pro_spalte = 0;
 $max_boxen = 0;
 $vorhandene_boxen = 0;
@@ -70,7 +70,7 @@ function Clear_All(parent){
 function Get_Qr_String(boxid, link, text, size, f_color, b_color){
 	qr_string = "";
 	qr_string += "<a href='/redirect.php?userboxid=" + boxid + "&link=" + link + "'>";
-	qr_string += "<div class='box' data-boxid='" + boxid + "' data-style='qr' + style='width: " + size + "px; height: " + size + "px' >";
+	qr_string += "<div class='box' data-boxid='" + boxid + "' data-editanddeleteable='true' data-style='qr' + style='width: " + size + "px; height: " + size + "px' >";
 	qr_string += "<div class='box_inner box_pic' style='width: " + size + "px; height: " + size + "px; background-image: url(\"/include/getQrCode.php?color=" + f_color + "&bgcolor=" + b_color + "&link=" + link + "&text=" + text + "&size=" + size + "\");'>";
 	qr_string += "</div>";
 	qr_string += "<div class='box_link' title='" + text + "'>";
@@ -83,10 +83,10 @@ function Get_Qr_String(boxid, link, text, size, f_color, b_color){
 
 function Get_Color_String(boxid, link, text, size, f_color, b_color){
 	color_string = "";
-	color_string += "<a href='/redirect.php?userboxid=" + boxid + "&link=http:/" + link + "'>";
-	color_string += "<div class='box' data-boxid='" + boxid + "' data-style='color' + style='width: " + size + "px; height: " + size + "px; background-color: " + b_color + "'>";
+	color_string += "<a href='/redirect.php?userboxid=" + boxid + "&link=" + link + "'>";
+	color_string += "<div class='box' data-boxid='" + boxid + "' data-editanddeleteable='true' data-style='color' style='width: " + size + "px; height: " + size + "px; background-color: " + urldecode(b_color) + ";'>";
 	color_string += "<div class='box_inner' style='height: 100%;'>";
-	color_string += "<div class='box_farbe_link' style='padding: 8px 0px; color: " + f_color + ";' title='" + text + "'>";
+	color_string += "<div class='box_farbe_link' style='padding: 8px 0px; color: " + urldecode(f_color) + ";' title='" + text + "'>";
 	color_string += text;
 	color_string += "</div>";
 	color_string += "</div>";
@@ -101,3 +101,10 @@ function Get_Empty_String(size){
 	empty_string += "</div>";
 	return empty_string;
 }
+
+function urldecode(value){
+	var new_value = decodeURIComponent(value);
+	var new_value = new_value.replace('+', ' ');
+	return new_value;
+}
+*/

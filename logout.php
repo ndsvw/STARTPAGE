@@ -1,7 +1,7 @@
 <?php
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php");
 
 	$user = new User();
 	$view = new Seitenaufruf();
@@ -22,7 +22,7 @@
 	<body>
 		<h1 style="text-align: center;">Logout erfolgreich</h1>
 		<p style="text-align: center;">
-			<a href="index.php">weiter</a>
+			<a href="login.php">weiter</a>
 		</p>
 		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>

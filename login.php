@@ -1,7 +1,7 @@
 <?php
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php");
 
 	$user = new User();
 	$view = new Seitenaufruf();
@@ -31,13 +31,15 @@
 				echo "<p style='border: 1px dotted #888888; padding: 7px;'><b>" . $_GET["infotext"] . "</b></p>";
 			}
 		?>
-		<form method="post" action="login.php">
-			<input class="modern" type="email" name="useremail" size="50" placeholder="E-Mail-Adresse" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus />
-			<input class="modern" type="password" name="userpassword" size="50" placeholder="Passwort" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus />
-			&nbsp;<input class="modern" type="submit" value="Anmelden" />
-		</form><br />
-		oder: &nbsp; <a href="registrieren.php">Registrieren</a> &nbsp; <a href="#" onclick="alert('Pech gehabt!');">Passwort vergessen</a><br />
-		<noscript>Zur optimalen Nutzung der Seite muss Javascript aktiviert sein</noscript>
+		<center>
+			<form method="post" action="login.php">
+				<input class="modern" type="email" name="useremail" size="50" placeholder="E-Mail-Adresse" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus />
+				<input class="modern" type="password" name="userpassword" size="50" placeholder="Passwort" autocomplete="off" aria-autocomplete="true" aria-expanded="false" autofocus />
+				&nbsp;<input class="modern" type="submit" value="Anmelden" />
+			</form><br />
+			oder: &nbsp; <a href="registrieren.php">Registrieren</a> &nbsp; <a href="#" onclick="alert('Pech gehabt!');">Passwort vergessen</a><br />
+			<noscript>Zur optimalen Nutzung der Seite muss Javascript aktiviert sein</noscript>
+		</center>
 		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>
 </html>

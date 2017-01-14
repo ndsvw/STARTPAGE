@@ -1,7 +1,7 @@
 <?php
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php"); 
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/user.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/seitenaufruf.php");
 
 	$user = new User();
 	$view = new Seitenaufruf();
@@ -14,10 +14,10 @@
 			link,
 			forecolor,
 			backcolor
-		FROM 
-			startpage_boxen 
-		WHERE 
-			user = '" . $user->id . "' 
+		FROM
+			startpage_boxen
+		WHERE
+			user = '" . $user->id . "'
 		AND
 			userboxid = '" . mysql_real_escape_string($_GET['userboxid']) . "'
 	");
@@ -30,9 +30,9 @@
 	<label>Boxtlink</label>
 	<input class="modern" type="text" id="boxlink" maxlength="256" size="30" value="<?php echo urldecode($sql['link']); ?>" />
 	<label>Farbe</label>
-	<input class="modern color" type="text" value="<?php echo urldecode($sql['forecolor']); ?>" id="boxforecolor" maxlength="6" size="6" />
+	<input class="modern color" type="text" value="<?php echo urldecode($sql['forecolor']); ?>" id="boxforecolor" maxlength="7" size="7" />
 	<label>Hintergrundfarbe</label>
-	<input class="modern color" type="text" value="<?php echo urldecode($sql['backcolor']); ?>" id="boxbackcolor" maxlength="6" size="6" />
+	<input class="modern color" type="text" value="<?php echo urldecode($sql['backcolor']); ?>" id="boxbackcolor" maxlength="7" size="7" />
 	<input type="hidden" id="boxid" value="<?php echo $_GET['userboxid']; ?>" />
 </p>
 <script type="text/javascript">
