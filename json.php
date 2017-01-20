@@ -43,7 +43,7 @@
 		$arr = array();
 		$result = mysql_query("
 			SELECT
-				text, forecolor, backcolor
+				text, link, forecolor, backcolor
 			FROM
 				startpage_boxen
 			WHERE
@@ -54,8 +54,9 @@
 
 		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
 			$arr[0] = $row['text'];
-			$arr[1] = $row['forecolor'];
-			$arr[2] = $row['backcolor'];
+			$arr[1] = $row['link'];
+			$arr[2] = $row['forecolor'];
+			$arr[3] = $row['backcolor'];
 			$boxenarray[count($boxenarray)] = $arr;
 		}
 

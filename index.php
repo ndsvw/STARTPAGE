@@ -40,11 +40,23 @@
 			<div id="main"></div>
 		</div>
 		<script>
-			var startpage = new Startpage("#main", <?php echo $user->boxsize; ?>, true, true);
-
+			var startpage = new Startpage("#main", <?php echo $user->boxsize; ?>, "<?php echo $user->style; ?>", true);
+			startpage.setShortLinksUsed(true);
+			startpage.setModifiable(true);
 			$.getJSON("/json.php?json=userdata", function( data ) {
-				startpage.addBoxen("#main", "<?php echo $user->style; ?>", data.boxen);
-				startpage.visualize(startpage.boxen);
+				startpage.addBoxen(data.boxen);
+				if(typeof(Storage) !== "undefined") {
+				    if(localStorage.getItem("data") == null){
+						console.log("Local storage is available but no data found!");
+					} else {
+						startpage.useLocalStorageBase64QR(localStorage.getItem("data"));
+					}
+				} else {
+				    console.log("Local Storage is not available!");
+				}
+				$.when(startpage.visualize(startpage.boxen)).then(function(){
+					//storeData();
+				});
 
 				startpage.addSuchen(data.suchen);
 				startpage.visualizeSuchen("#searchbox");
@@ -53,9 +65,37 @@
 					startpage.makeSucheAktive($(this).attr("data-suche"));
 				});
 			});
+			function storeData(){
+				var arr = [];
+				for(i = 0; i < startpage.boxen.length; i++){
+					$("body").append("<img style='display: hidden; width: 114px; height: 114px;' class='hiddenIMG' id='hiddenIMG" + i + "' src='/include/getQrCode.php?color=" + startpage.boxen[i].fcolor + "&bgcolor=" + startpage.boxen[i].bcolor + "&link=" + startpage.boxen[i].link + "&text=" + startpage.boxen[i].text + "&size=" + startpage.boxsize + "' />");
+					$("body").append("<canvas style='display: hidden;' class='hiddenCanvas' id='hiddenCanvas" + i + "' height='124' width='124'></canvas>");
 
+					var c = document.getElementById("hiddenCanvas" + i);
+					var ctx = c.getContext("2d");
+
+					var img = document.getElementById("hiddenIMG" + i);
+					ctx.drawImage(img, 0, 0);
+
+					arr[i] = c.toDataURL();
+				}
+
+				$(".hiddenIMG").remove();
+				$(".hiddenCanvas").remove();
+
+				localStorage.setItem("data", JSON.stringify(arr));
+			}
 			$(document).ready(function() {
 				$("#main_input").focus();
+
+				/*newfoo = JSON.parse(localStorage.getItem("data"));
+				for(i = 0; i < newfoo.length; i++){
+					$("body").append("<div class=\"box_pic\" style=\"height: 154px; width: 154px; background-image: url('" + newfoo[i] + "')\"></div>");
+				}*
+				//console.log(localStorage.getItem("data"));
+
+				//$("html").append(localStorage.getItem("data"));
+					*/
 			});
 		</script>
 		<noscript style="font-size: 2.3em;"><center style="margin-top: 21%;">Javascript erforderlich!<br />Bitte aktiviere Javascript in deinem Webbrowser!</center></noscript>

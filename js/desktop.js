@@ -1,11 +1,8 @@
 function urlencode(value){
-	var new_value = encodeURIComponent(value);
-	return new_value;
+	return encodeURIComponent(value);
 }
 function urldecode(value){
-	var new_value = decodeURIComponent(value);
-	var new_value = new_value.replace('+', ' ');
-	return new_value;
+	return decodeURIComponent(value).replace('+', ' ');
 }
 function escapeRegExp(str) {
 	return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
@@ -67,7 +64,7 @@ $(document).ready(function() {
 	}
 
 	function analyseCMD(cmd){
-		
+		cmd = cmd.slice(1); //Doppelpunkt verschwindet
 	}
 
 	$("#search-form").keyup(function(event){ //only possible if input starts with ":"
@@ -85,7 +82,7 @@ $(document).ready(function() {
 		}*/
 	});
 	$('#main_input').on('input', function() {
-		startpage.editableAndAddable = ($('#main_input').val() == "");
+		startpage.setModifiable($('#main_input').val() == "");
 		startpage.visualize(startpage.filter($('#main_input').val()));
 		$("#inputDropDown").html("");
 		if($('#main_input').val().substring(0, 1) == ":"){
@@ -111,10 +108,10 @@ $(document).ready(function() {
 		revert: true,
 		start: function(){
 			draggedBox = startpage.getBoxById($(this).parent().attr("data-boxid"));
-			if(startpage.editableAndAddable == true){
+			if(startpage.isModifiable()){
 
-				$(startpage.mainElement).parent().append("<div id='edit_area'><img src='/img/ic_edit_black_48dp_2x.png'></div>");
-				$(startpage.mainElement).parent().append("<div id='delete_area'><img src='/img/ic_delete_black_48dp_2x.png'></div>");
+				$(startpage.getMainElement()).parent().append("<div id='edit_area'><img src='/img/ic_edit_black_48dp_2x.png'></div>");
+				$(startpage.getMainElement()).parent().append("<div id='delete_area'><img src='/img/ic_delete_black_48dp_2x.png'></div>");
 
 				$(".box").droppable(dropInOtherBox);
 
@@ -136,12 +133,12 @@ $(document).ready(function() {
 
 
 				$(this).css("z-index", "2");
-				$(startpage.mainElement).css("height", $(startpage.mainElement).height() + $("#delete_area").height());
+				$(startpage.getMainElement()).css("height", $(startpage.getMainElement()).height() + $("#delete_area").height());
 			}
 		},
 		stop: function( event, ui ) {
 			$(".box_inner").css("z-index", "auto");
-			$(startpage.mainElement).css("height", $(startpage.mainElement).height() - $("#delete_area").height());
+			$(startpage.getMainElement()).css("height", $(startpage.getMainElement()).height() - $("#delete_area").height());
 
 			$("#edit_area").animate({
 				opacity: 0,
@@ -185,20 +182,20 @@ $(document).ready(function() {
 						{
 							text: "Box speichern",
 							click: function(){
-								startpage.boxen[draggedBox.id].text = $("#boxtext").val();
-								startpage.boxen[draggedBox.id].link = $("#boxlink").val();
-								startpage.boxen[draggedBox.id].fcolor = urlencode($("#boxforecolor").val());
-								startpage.boxen[draggedBox.id].bcolor = urlencode($("#boxbackcolor").val());
+								startpage.getBoxById(draggedBox.id).setText($("#boxtext").val());
+								startpage.getBoxById(draggedBox.id).setLink($("#boxlink").val());
+								startpage.getBoxById(draggedBox.id).setFcolor(urlencode($("#boxforecolor").val()));
+								startpage.getBoxById(draggedBox.id).setBcolor(urlencode($("#boxbackcolor").val()));
 								startpage.visualize(startpage.boxen);
 
 								var lnk = new Link();
 								lnk.addStamm("/commands.php");
 								lnk.addValue("action", "box_speichern");
 								lnk.addValue("userboxid", draggedBox.id);
-								lnk.addValue("boxtext", urlencode(startpage.boxen[draggedBox.id].text));
-								lnk.addValue("boxlink", urlencode(startpage.boxen[draggedBox.id].link));
-								lnk.addValue("boxforecolor", startpage.boxen[draggedBox.id].fcolor);
-								lnk.addValue("boxbackcolor", startpage.boxen[draggedBox.id].bcolor);
+								lnk.addValue("boxtext", urlencode(startpage.getBoxById(draggedBox.id).getText()));
+								lnk.addValue("boxlink", urlencode(startpage.getBoxById(draggedBox.id).getLink()));
+								lnk.addValue("boxforecolor", startpage.getBoxById(draggedBox.id).getFcolor());
+								lnk.addValue("boxbackcolor", startpage.getBoxById(draggedBox.id).getBcolor());
 								lnk.openInBackground();
 								$(this).dialog("close");
 							}

@@ -1,26 +1,61 @@
-function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabase){
+function Startpage(mainElement, boxsize, boxstyle){
     this.mainElement = mainElement;
     this.boxsize = boxsize;
-    this.editableAndAddable = editableAndAddable;
-    this.boxenAreFromDatabase = boxenAreFromDatabase;
+    this.boxstyle = boxstyle; //all boxes have the same style.
+    this.modifiable = false; //decides wheather the user is able to dragg, edit, add, delete... boxes.
+    this.shortLinksUsed = false; //decides whether "?userboxid=x" or "y.com/z" will be opened.
     this.margin = 22;
     this.boxen = [];
     this.suchen = [];
+
+    //getter and setter
+    this.getMainElement = function(){
+        return this.mainElement;
+    }
+    this.setMainElement = function(mainElement){
+        this.mainElement = mainElement;
+    }
+    this.getBoxSize = function(){
+        return this.boxsize;
+    }
+    this.setBoxSize = function(boxsize){
+        this.boxsize = boxsize;
+    }
+    this.getBoxStyle = function(){
+        return this.boxstyle;
+    }
+    this.setBoxStyle = function(boxstyle){
+        this.boxstyle = boxstyle;
+    }
+    this.isModifiable = function(modifiable){
+        return this.modifiable;
+    }
+    this.setModifiable = function(modifiable){
+        this.modifiable = modifiable;
+    }
+    this.areShortLinksUsed = function(){
+        return this.shortLinksUsed;
+    }
+    this.setShortLinksUsed = function(shortLinksUsed){
+        this.shortLinksUsed = shortLinksUsed;
+    }
+    this.getMargin = function(){
+        return this.margin;
+    }
+    this.setMargin = function(margin){
+        this.margin = margin;
+    }
 
     this.addBox = function(box){
         //adds boxes to the startpage to visualize them later
         this.boxen.push(box);
     }
 
-    this.addBoxen = function(parent, style, json){
+    this.addBoxen = function(json){
         //get boxes by json
         for(var i = 0; i < json.length; i++){
-            this.addBox(new Box(this, urldecode(json[i][0]),  "", style, json[i][1], json[i][2]));
+            this.addBox(new Box(this, urldecode(json[i][0]), json[i][1], json[i][2] , json[i][3]));
         }
-    }
-
-    this.deleteBox = function(box){
-        this.boxen.splice(box, 1);
     }
 
     this.editBox = function(boxid, text, link, fcolor, bcolor){
@@ -36,9 +71,13 @@ function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabas
         startpage.visualize(startpage.boxen);
     }
 
+    this.deleteBox = function(box){
+        this.boxen.splice(box, 1);
+    }
+
     this.createNewBox = function(text, link, fcolor, bcolor){
         //adds the given box to the startpage and saves the box in the database
-        this.addBox(new Box(this, text, link, this.boxen[0].style, fcolor, bcolor));
+        this.addBox(new Box(this, text, link, fcolor, bcolor));
         this.visualize(this.boxen);
 
         var lnk = new Link();
@@ -51,9 +90,20 @@ function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabas
         lnk.openInBackground();
     }
 
+    this.useLocalStorageBase64QR = function(json){
+        arr = JSON.parse(localStorage.getItem("data"));
+        for(i = 0; i < arr.length; i++){
+            if(this.boxstyle === "qr"){
+                this.boxen[i].setStoredBase64(arr[i]);
+            }
+        }
+        //console.log("ABC " + arr.length + " " + this.boxen.length);
+    }
+
     this.outputInConsole = function(){
+        console.log(this);
         for(i = 0; i < this.boxen.length; i++){
-            console.log("#" + this.boxen[i].id + " " + this.boxen[i].text + " " + this.boxen[i].link + " " + this.boxen[i].style + " " + this.boxen[i].fcolor + " " + this.boxen[i].bcolor);
+            this.getBoxById(i).outputInConsole();
         }
     }
 
@@ -68,11 +118,7 @@ function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabas
     }
 
     this.getBoxById = function(id){
-        for(i = 0; i < this.boxen.length; i++){
-            if(this.boxen[i].id == id){
-                return this.boxen[i];
-            }
-        }
+        return this.boxen[id];
     }
 
     this.visualize = function(bxs){
@@ -92,8 +138,8 @@ function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabas
         $(mainElement).css("margin", "0 auto");
         $(mainElement).css("min-height", (this.boxsize + 1 + 40) * boxenProSpalte + 10 + "px");
 
-        //only if editableAndAddable == true
-        if(startpage.editableAndAddable == true){
+        //only if modifiable == true
+        if(this.isModifiable()){
             //fill the rest
             max_boxen = boxenProSpalte * boxenProReihe;
             for(var i = 1; i <= (max_boxen - bxs.length); i++){
@@ -119,9 +165,9 @@ function Startpage(mainElement, boxsize, editableAndAddable, boxenAreFromDatabas
         filteredMitPrio = [];
         filtered = [];
         for(i = 0; i < this.boxen.length; i++){
-            if(this.boxen[i].text.toLowerCase().substring(0, str.length) === str.toLowerCase().substring(0, str.length)){
+            if(this.boxen[i].getText().toLowerCase().substring(0, str.length) === str.toLowerCase().substring(0, str.length)){
                 filteredMitPrio.push(this.boxen[i]);
-            } else if(this.boxen[i].text.toLowerCase().includes(str.toLowerCase())){
+            } else if(this.boxen[i].getText().toLowerCase().includes(str.toLowerCase())){
                 filtered.push(this.boxen[i]);
             }
         }
