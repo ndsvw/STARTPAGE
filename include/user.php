@@ -1,5 +1,6 @@
 <?php
 	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/mailsender.php");
 
 	class User{
 		public $id;
@@ -83,18 +84,96 @@
 						$this->load_user_data_by_id($this->id);
 						$this->logged_in = true;
 						$login_successfull = true;
+						return "sucess";
 					} else {
-						$infotext = urlencode("Dein Account ist nicht verifiziert. Bitte bestätige den Link in der Bestätigungs-Email!");
-						header("Location: /login.php?infotext=" . $infotext);
-						exit();
+						return "notVerified";
 					}
 				} else {
-					$infotext = urlencode("Falsche Email-Adresse oder falches Passwort!");
-					header("Location: /login.php?infotext=" . $infotext);
-					exit();
+					return "loginWrong";
 				}
+			} else {
+				header("Location: /index.php");
 			}
-			return $login_successfull;
+		}
+
+		public static function registrieren($email, $pw1, $pw2){
+			if($pw1 == $pw2){
+				$query = mysql_fetch_array(mysql_query("
+					SELECT
+						COUNT(*)
+					FROM
+						user
+					WHERE
+						mail = '" . mysql_real_escape_string($email) . "'
+				"));
+				if($query[0] == 0){
+					mysql_query("
+						INSERT INTO user (
+							mail,
+							password,
+							verified
+						)
+						VALUES (
+							'" . mysql_real_escape_string($email) . "',
+							'" . md5($pw1) . "',
+							'0'
+						)
+					");
+					$query = mysql_fetch_array(mysql_query("
+						SELECT
+							id
+						FROM
+							user
+						WHERE
+							mail = '" . mysql_real_escape_string($email) . "'
+					"));
+					for($i=1;$i<=5;$i++){
+						mysql_query("
+							INSERT INTO startpage_user_suchen (
+								user_id,
+								such_id
+							)
+							VALUES (
+								'" . $query[0] . "',
+								'" . $i . "'
+							)
+						");
+					}
+					User::sendVerificationMail($query[0]);
+					return "regSuccess";
+				} else {
+					return "userExistsAlready";
+				}
+			} else {
+				return "differentPWs";
+			}
+		}
+
+		public static function sendVerificationMail($userID){
+			$code = User::rand_string(32);
+			mysql_query("
+				UPDATE
+					user
+				SET
+					verificationCode = '" . $code . "'
+				WHERE
+					id = '" . $userID . "'
+			");
+			$query = mysql_query("
+				SELECT
+					mail
+				FROM
+					user
+				WHERE
+					id = '" . $userID . "'
+			");
+			$message = "";
+			$message .= "Mit folgendem Link kannst du deinen Account verifizieren:<br />";
+			$message .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/verify.php?code=" . $code . "'>Account verifizieren</a><br /><br />";
+			$message .= "Falls der Link nicht funktioniert, öffnen Sie folgende URL manuell:<br />";
+			$message .= "http://" . $_SERVER['SERVER_NAME'] . "/verify.php?code=" . $code;
+			$mailsender = new MailSender;
+			$mailsender->sendMail(mysql_fetch_array($query)[0], "noreply@" . $_SERVER['SERVER_NAME'], "Verifiziere deinen Account", $message);
 		}
 
 		public function logout(){
@@ -167,7 +246,7 @@
 			return mysql_fetch_array($query)[0];
 		}
 
-		private function rand_string($lng)
+		private static function rand_string($lng)
 		{
 			mt_srand(crc32(microtime()));
 			$buchstaben = "abcdefghijkmnpqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";

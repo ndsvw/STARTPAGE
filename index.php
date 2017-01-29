@@ -46,17 +46,18 @@
 			$.getJSON("/json.php?json=userdata", function( data ) {
 				startpage.addBoxen(data.boxen);
 				if(typeof(Storage) !== "undefined") {
-				    if(localStorage.getItem("data") == null){
-						console.log("Local storage is available but no data found!");
+				    if(localStorage.getItem("data") == null || localStorage.getItem("data") === "[]" || JSON.parse(localStorage.getItem("data"))[0] === "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAB8CAYAAACrHtS+AAAAUklEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAfBvwvAABVXx5TQAAAABJRU5ErkJggg=="){
+						console.log("Local storage is available but no data or data with errors found!");
+						$.when(startpage.visualize(startpage.boxen)).then(function(){
+							storeData();
+						});
 					} else {
 						startpage.useLocalStorageBase64QR(localStorage.getItem("data"));
+						startpage.visualize(startpage.boxen);
 					}
 				} else {
 				    console.log("Local Storage is not available!");
 				}
-				$.when(startpage.visualize(startpage.boxen)).then(function(){
-					//storeData();
-				});
 
 				startpage.addSuchen(data.suchen);
 				startpage.visualizeSuchen("#searchbox");
@@ -92,9 +93,6 @@
 				for(i = 0; i < newfoo.length; i++){
 					$("body").append("<div class=\"box_pic\" style=\"height: 154px; width: 154px; background-image: url('" + newfoo[i] + "')\"></div>");
 				}*
-				//console.log(localStorage.getItem("data"));
-
-				//$("html").append(localStorage.getItem("data"));
 					*/
 			});
 		</script>

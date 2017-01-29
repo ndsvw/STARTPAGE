@@ -1,5 +1,5 @@
 <?php
-	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php"); 
+	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/verbindung.php");
 	require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/PHPMailer/PHPMailerAutoload.php");
 
 	class MailSender{
@@ -12,12 +12,7 @@
 			$mail->Subject = $subject;
 			$mail->Body = $text;
 
-			if(!$mail->send()) {
-			    echo 'Email konnte nicht gesendet werden!';
-			    echo 'Mailer Error: ' . $mail->ErrorInfo;
-			} else {
-			    echo 'Email wurde erfolgreich gesendet!';
-			}
+			return $mail->send();
 		}
 	}
 ?>

@@ -9,6 +9,7 @@
 	$view->check();
 	$view->save_view();
 	$user->logout();
+	header("Location: /login.php?check=loggedOut");
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,7 @@
 	<body>
 		<h1 style="text-align: center;">Logout erfolgreich</h1>
 		<p style="text-align: center;">
-			<a href="login.php">weiter</a>
+			<a href="login.php?check=loggedOut">weiter</a>
 		</p>
 		<?php require_once(dirname($_SERVER['DOCUMENT_ROOT']) . "/www/include/unten.php"); ?>
 	</body>

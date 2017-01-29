@@ -59,6 +59,8 @@ function Startpage(mainElement, boxsize, boxstyle){
     }
 
     this.editBox = function(boxid, text, link, fcolor, bcolor){
+        startpage.visualize(startpage.boxen);
+
         var lnk = new Link();
         lnk.addStamm("/commands.php");
         lnk.addValue("action", "box_speichern");
@@ -68,11 +70,13 @@ function Startpage(mainElement, boxsize, boxstyle){
         lnk.addValue("boxforecolor", fcolor);
         lnk.addValue("boxbackcolor", bcolor);
         lnk.openInBackground(true);
-        startpage.visualize(startpage.boxen);
+        
+        storeData();
     }
 
     this.deleteBox = function(box){
         this.boxen.splice(box, 1);
+        storeData();
     }
 
     this.createNewBox = function(text, link, fcolor, bcolor){
@@ -92,7 +96,7 @@ function Startpage(mainElement, boxsize, boxstyle){
 
     this.useLocalStorageBase64QR = function(json){
         arr = JSON.parse(localStorage.getItem("data"));
-        for(i = 0; i < arr.length; i++){
+        for(i = 0; i < this.boxen.length; i++){
             if(this.boxstyle === "qr"){
                 this.boxen[i].setStoredBase64(arr[i]);
             }
@@ -115,6 +119,15 @@ function Startpage(mainElement, boxsize, boxstyle){
         this.boxen[id1] = this.boxen[id2];
         this.boxen[id2] = tmp;
         this.visualize(this.boxen);
+
+        var lnk = new Link();
+        lnk.addStamm("/commands.php");
+        lnk.addValue("action", "boxen_tauschen");
+        lnk.addValue("userboxid1", urlencode(id1))
+        lnk.addValue("userboxid2", urlencode(id2));
+        lnk.openInBackground();
+
+        storeData();
     }
 
     this.getBoxById = function(id){

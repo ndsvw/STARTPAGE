@@ -215,12 +215,6 @@ $(document).ready(function() {
 			droppedBox = startpage.getBoxById($(this).attr("data-boxid"));
 			if(draggedBox.id != droppedBox.id){
 				startpage.swapBoxes(draggedBox.id, droppedBox.id);
-				var lnk = new Link();
-				lnk.addStamm("/commands.php");
-				lnk.addValue("action", "boxen_tauschen");
-				lnk.addValue("userboxid1", urlencode(draggedBox.id))
-				lnk.addValue("userboxid2", urlencode(droppedBox.id));
-				lnk.openInBackground(false);
 			}
 			dropped_into_edit_delete = false;
 		}
